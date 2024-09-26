@@ -380,7 +380,8 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                     ),
                   ),
-                  Expanded(
+                  //comment by krunal 26-09-2024
+/*                  Expanded(
                     child: InkWell(
                       onTap: () {
                         _pickImageFromCamera();
@@ -397,7 +398,7 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

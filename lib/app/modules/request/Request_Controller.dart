@@ -18,24 +18,21 @@ import '../../constants/Api.dart';
 import '../../utils/shake_widget.dart';
 import 'package:http/http.dart' as http;
 
-class RequestController extends GetxController{
-
+class RequestController extends GetxController {
   dynamic data = Get.arguments;
 
   RxString pageTitle = "".obs;
-  String towing_for ="";
+  String towing_for = "";
 
-  String truck_tire_type ="";
-  String selectedCountryId ="";
-  String selectedStateId ="";
-  String selectedCityId ="";
+  String truck_tire_type = "";
+  String selectedCountryId = "";
+  String selectedStateId = "";
+  String selectedCityId = "";
   late SharedPreferences prefs;
-
 
   Rx<File?> imagePath = Rx<File?>(null);
 
   RxBool isLoading = false.obs;
-
 
   List<String> arrServices = [
     "Truck Repair",
@@ -46,8 +43,14 @@ class RequestController extends GetxController{
   ];
   List<String> arrTypeOfTire = ["Steer", "Driver"];
   List<String> arrTowingSrv = ["Truck", "Trailer", "Both"];
-  List<String> arrTruckMake = ["Freightliner ", "Volvo", "Kenworth","Peterbilt","International","Other"];
-
+  List<String> arrTruckMake = [
+    "Freightliner ",
+    "Volvo",
+    "Kenworth",
+    "Peterbilt",
+    "International",
+    "Other"
+  ];
 
   List<Info> arrCountry = [];
   List<StateInfo> arrState = [];
@@ -100,30 +103,28 @@ class RequestController extends GetxController{
 
   @override
   void onInit() {
-  //  pageTitle.value = data;
+    //  pageTitle.value = data;
     print("RequestController");
     getList();
     fetchCountries();
 
     super.onInit();
   }
-  Future<void> fetchCountries() async{
+
+  Future<void> fetchCountries() async {
     isLoadingCountry.value = true;
     final response = await http.get(Uri.parse(Api.COUNTRY));
-    if(response.statusCode==200){
+    if (response.statusCode == 200) {
       Country countryData = Country.fromJson(json.decode(response.body));
       arrCountry = countryData.info ?? [];
-
     }
     isLoadingCountry.value = false;
   }
+
   getList() async {
     prefs = await SharedPreferences.getInstance();
-    txtMobile.text=prefs.getString("mobile_no")!;
-    txtEmail.text=prefs.getString("email")!;
-
-
-
+    txtMobile.text = prefs.getString("mobile_no")!;
+    txtEmail.text = prefs.getString("email")!;
   }
 
   Future<void> fetchStates(String countryId) async {
@@ -143,13 +144,11 @@ class RequestController extends GetxController{
       StateData stateData = StateData.fromJson(json.decode(response.body));
 
       arrState = stateData.info ?? [];
-
     } else {
       // Handle the error
       print('Failed to load states');
     }
     isLoadingState.value = false;
-
   }
 
   Future<void> fetchCities(String stateId) async {
@@ -168,13 +167,11 @@ class RequestController extends GetxController{
       CityData cityData = CityData.fromJson(json.decode(response.body));
 
       arrCity = cityData.info ?? [];
-
     } else {
       // Handle the error
       print('Failed to load states');
     }
     isLoadingCity.value = false;
-
   }
 
   onServiceSelect(String? value) {
@@ -182,13 +179,13 @@ class RequestController extends GetxController{
     if (value != "Truck Repair") {
       selectedTruck.value = '';
     }
-
   }
+
   onTruckSelect(String? value) {
-    print("service"+value!);
+    print("service" + value!);
     selectedTruck.value = value ?? '';
-
   }
+
   showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
         backgroundColor: Colors.blue[100],
@@ -219,7 +216,8 @@ class RequestController extends GetxController{
                       ),
                     ),
                   ),
-                  Expanded(
+                  //comment by krunal 25-09-2024
+                  /* Expanded(
                     child: InkWell(
                       onTap: () {
                         _pickImageFromCamera(context);
@@ -236,32 +234,34 @@ class RequestController extends GetxController{
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
           );
         });
   }
+
   showAlertDialog(context) => showCupertinoDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => CupertinoAlertDialog(
-      title: const Text('Permission Denied'),
-      content: const Text('Allow access to gallery and photos'),
-      actions: <CupertinoDialogAction>[
-        CupertinoDialogAction(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text('Allow access to gallery and photos'),
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () => openAppSettings(),
+              child: const Text('Settings'),
+            ),
+          ],
         ),
-        CupertinoDialogAction(
-          isDefaultAction: true,
-          onPressed: () => openAppSettings(),
-          child: const Text('Settings'),
-        ),
-      ],
-    ),
-  );
+      );
+
   void showAlertDialog1(BuildContext context) {
     showCupertinoDialog<void>(
       context: context,
@@ -286,7 +286,8 @@ class RequestController extends GetxController{
 
   Future<void> _pickImageFromGallery(BuildContext context) async {
     try {
-      final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final returnImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (returnImage == null) {
         print('No image selected');
         Navigator.of(context).pop();
@@ -318,7 +319,8 @@ class RequestController extends GetxController{
 //Camera
   Future<void> _pickImageFromCamera(BuildContext context) async {
     try {
-      final returnImage = await ImagePicker().pickImage(source: ImageSource.camera);
+      final returnImage =
+          await ImagePicker().pickImage(source: ImageSource.camera);
       if (returnImage == null) {
         print('No image selected');
         Navigator.of(context).pop();
@@ -392,10 +394,11 @@ class RequestController extends GetxController{
       isReqInfo.currentState?.shake();
       isValid = false;
     }
-    if (imagePath.value == null || imagePath.value!.path.isEmpty) {
+
+    /*if (imagePath.value == null || imagePath.value!.path.isEmpty) {
       Get.snackbar("Error", "Select Image", snackPosition: SnackPosition.BOTTOM);
-      isValid = false;
-    }
+      isValid = true;
+    }*/
 
     return isValid;
   }
@@ -410,14 +413,18 @@ class RequestController extends GetxController{
     isLoading.value = true;
 
     try {
-
       var uri = Uri.parse(Api.REQUEST_SERVICE);
       var request = http.MultipartRequest('POST', uri);
       request.fields['service'] = selectedService.value;
-      request.fields['truck_tire_type'] = selectedService.value == "Truck Tire" ?truck_tire_type: '';
-      request.fields['tire_size'] = (selectedService.value == "Truck Tire" || selectedService.value== "Trailer Tire")? txtTrialerTire.text ?? '': '';
-      request.fields['towing_for'] =selectedService.value =="Towing" ?towing_for :'';
-      request.fields['mobile_no'] =txtMobile.text;
+      request.fields['truck_tire_type'] =
+          selectedService.value == "Truck Tire" ? truck_tire_type : '';
+      request.fields['tire_size'] = (selectedService.value == "Truck Tire" ||
+              selectedService.value == "Trailer Tire")
+          ? txtTrialerTire.text ?? ''
+          : '';
+      request.fields['towing_for'] =
+          selectedService.value == "Towing" ? towing_for : '';
+      request.fields['mobile_no'] = txtMobile.text;
       request.fields['email'] = txtEmail.text;
       request.fields['country'] = selectedCountryId;
 
@@ -426,15 +433,16 @@ class RequestController extends GetxController{
       request.fields['address'] = txtAdrs.text;
       request.fields['remark'] = txtReqInfo.text;
       request.fields['truck_make'] = selectedTruck.value;
-      request.fields['make_other'] =  selectedTruck.value=="Other"?txtOtherMake.text:'';
+      request.fields['make_other'] =
+          selectedTruck.value == "Other" ? txtOtherMake.text : '';
       request.fields['vi_number'] = txtVi.text;
 
-       if (imagePath != null && imagePath.value!.path.isNotEmpty) {
-        request.files.add(await http.MultipartFile.fromPath('image', imagePath.value!.path));
-     }
+      if (imagePath != null && imagePath.value!.path.isNotEmpty) {
+        request.files.add(
+            await http.MultipartFile.fromPath('image', imagePath.value!.path));
+      }else{
 
-
-
+      }
 
       print('service: ${request.fields['service']}');
       print('truck_tire_type: ${request.fields['truck_tire_type']}');
@@ -451,20 +459,12 @@ class RequestController extends GetxController{
       print('make_other: ${request.fields['make_other']}');
       print('vi_number: ${request.fields['vi_number']}');
 
-
-
       var response = await request.send();
       if (response.statusCode == 200) {
-
-
-
         Get.to(() => const SideBarView());
-      //  Navigator.push(context, MaterialPageRoute(builder: (context) => const SideBarView(),));
+        //  Navigator.push(context, MaterialPageRoute(builder: (context) => const SideBarView(),));
         Get.snackbar("Success", "Request sent successfully",
-
             snackPosition: SnackPosition.BOTTOM);
-
-
       } else {
         Get.snackbar("Error", "Failed to send request",
             snackPosition: SnackPosition.BOTTOM);
@@ -476,12 +476,5 @@ class RequestController extends GetxController{
     } finally {
       isLoading.value = false;
     }
-
-
-
   }
-
-
-
-
 }

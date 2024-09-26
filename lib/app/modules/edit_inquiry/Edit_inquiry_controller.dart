@@ -279,7 +279,8 @@ String rname="";
                       ),
                     ),
                   ),
-                  Expanded(
+                  //comment by krunal 26-09-2024
+/*                  Expanded(
                     child: InkWell(
                       onTap: () {
                         _pickImageFromCamera(context);
@@ -296,7 +297,7 @@ String rname="";
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
