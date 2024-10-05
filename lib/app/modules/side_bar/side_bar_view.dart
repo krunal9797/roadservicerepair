@@ -238,7 +238,6 @@ class _SideBarViewState extends State<SideBarView> {
 
                     const SizedBox(height: 30),
 
-
                     setSideBarButton("Logout", () {
                       showDialogBox(
                           "Logout", "are you sure, you want to logout?", () async {
