@@ -217,7 +217,7 @@ class _ProfileViewState extends State<ProfileView> {
               Get.back(); // Close the dialog
             },
           );
-        }, "Delete Account" as Widget)
+        }, Text("Delete Account"))  // Wrap the string with Text widget
 
       ],
     );
@@ -226,14 +226,28 @@ class _ProfileViewState extends State<ProfileView> {
   Future<void> deleteAccount() async {
     try {
       var headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       };
+
+      // Check if 'u_id' is stored as int or string
+      String? userId = prefs.getString('u_id'); // Try fetching it as a String
+
+      if (userId == null) {
+        // If not found as String, try as int
+        int? userIdInt = prefs.getInt('u_id');
+        userId = userIdInt?.toString(); // Convert int to String if necessary
+      }
+
+      // Ensure that userId is not null before proceeding
+      if (userId == null) {
+        Get.snackbar("Error", "User ID not found");
+        return;
+      }
 
       var request = http.Request('POST', Uri.parse('https://roadservice.roadservicerepair.com/api/delete_profile.php'));
 
-      // Assuming you have a way to get the user's ID (like `prefs.getInt('u_id')`)
       request.body = json.encode({
-        "u_id": prefs.getInt('u_id').toString() // Adjust as per your logic
+        "u_id": userId,  // Pass the user ID as a string
       });
 
       request.headers.addAll(headers);
@@ -243,10 +257,16 @@ class _ProfileViewState extends State<ProfileView> {
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
+        // Clear all SharedPreferences data
+        await prefs.clear();
+        prefs.setBool("isLogin", false);
+        Get.back(); // Close the dialog
+        Get.offAllNamed('/splash'); // Replace '/home' with your home route
         Get.snackbar("Success", "Account deleted successfully");
-        // Optionally, you can navigate to another screen or clear user data here
+        // Optionally, navigate to another screen or clear user data here
       } else {
         print(response.reasonPhrase);
+        Get.back(); // Close the dialog
         Get.snackbar("Error", "Failed to delete account: ${response.reasonPhrase}");
       }
     } catch (e) {
@@ -254,5 +274,6 @@ class _ProfileViewState extends State<ProfileView> {
       Get.snackbar("Error", "An error occurred: ${e.toString()}");
     }
   }
+
 
 }
