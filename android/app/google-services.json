@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "612114844525",
+    "project_id": "road-repair-service",
+    "storage_bucket": "road-repair-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612114844525:android:91239cca67c0ad8e7c6864",
+        "android_client_info": {
+          "package_name": "com.roadservicerepair.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADS7EzzgC2aNPNK95reBdR6tglMVVDTDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
