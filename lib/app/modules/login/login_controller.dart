@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,38 @@ class LoginController extends GetxController {
 
   RxBool isSecure = false.obs;
   RxBool isLoading = false.obs; // Loader state
+
+  RxInt currentImageIndex = 0.obs;
+  late Timer _imageChangeTimer;
+
+  // List of image paths
+  final List<String> images = [
+    'assets/images/i1.png',
+    'assets/images/i2.png',
+    'assets/images/i3.png',
+  ];
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Start the image change timer
+    _startImageChangeTimer();
+  }
+
+  @override
+  void onClose() {
+    // Cancel the timer when the controller is disposed
+    _imageChangeTimer.cancel();
+    super.onClose();
+  }
+
+  // Method to start changing images every 3 seconds
+  void _startImageChangeTimer() {
+    _imageChangeTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      // Update the image index
+      currentImageIndex.value = (currentImageIndex.value + 1) % images.length;
+    });
+  }
 
   onVisibilityTap(bool value) {
     isSecure.value = value;

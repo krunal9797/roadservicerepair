@@ -19,6 +19,7 @@ class CustomersController extends GetxController {
 
   Future<void> fetchCustomers() async {
     try {
+
       final response = await http.get(Uri.parse(Api.CUSTOMER_LIST));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

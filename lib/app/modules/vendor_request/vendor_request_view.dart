@@ -80,19 +80,6 @@ class _VendorReqViewState extends State<VendorReqView> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Email :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['email']))
-                                ],
-                              ),
-                            ),
 
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -107,84 +94,7 @@ class _VendorReqViewState extends State<VendorReqView> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('truck_make :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['truck_make']))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('make_other :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['make_other']))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('vi_number :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['vi_number']))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('tire_type :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['tire_type']))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('tire_size :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['tire_size']))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('towing_for :'),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(child: Text(vendor['towing_for']))
-                                ],
-                              ),
-                            ),
+
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(

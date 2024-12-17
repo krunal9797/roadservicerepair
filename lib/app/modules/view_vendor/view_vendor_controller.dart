@@ -7,6 +7,7 @@ import '../../constants/Api.dart';
 
 class VendorsController extends GetxController {
   RxList arr = [].obs;
+
   void onInit() {
     super.onInit();
     fetchVendor();
@@ -14,6 +15,7 @@ class VendorsController extends GetxController {
 
   Future<void> fetchVendor() async {
     try {
+
       final response = await http.get(Uri.parse(Api.VENDORLIST));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -28,7 +30,7 @@ class VendorsController extends GetxController {
     }
   }
 
-  Future<void> deleteItem( String id) async{
+  Future<void> deleteItem(String id) async {
     try {
       final response = await http.post(
         Uri.parse(Api.DELETE_VENDOR),
@@ -46,7 +48,6 @@ class VendorsController extends GetxController {
           print(jsonResponse);
           fetchVendor();
           Get.snackbar("Success", jsonResponse['info']);
-
         } else {
           // Handle error response
           Get.snackbar("Error", jsonResponse['info']);
@@ -58,7 +59,5 @@ class VendorsController extends GetxController {
       print(e);
       Get.snackbar("Error", "An error occurred");
     }
-
-
   }
-  }
+}

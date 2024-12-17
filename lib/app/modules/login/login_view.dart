@@ -92,44 +92,44 @@ class LoginView extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 100,
-                        child: Divider(
-                          color: AppColors.detailText,
-                          thickness: 1,
-                          height: 1,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      setRegularText("OR", AppColors.titleText, 14),
-                      const SizedBox(width: 5),
-                      const SizedBox(
-                        width: 100,
-                        child: Divider(
-                          color: AppColors.detailText,
-                          thickness: 1,
-                          height: 1,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     const SizedBox(
+                  //       width: 100,
+                  //       child: Divider(
+                  //         color: AppColors.detailText,
+                  //         thickness: 1,
+                  //         height: 1,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 5),
+                  //     //setRegularText("OR", AppColors.titleText, 14),
+                  //     const SizedBox(width: 5),
+                  //     const SizedBox(
+                  //       width: 100,
+                  //       child: Divider(
+                  //         color: AppColors.detailText,
+                  //         thickness: 1,
+                  //         height: 1,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 10),
 
-                  Center(
-                    child: setButton(
-                      controller.onRegisterTap,
-                      setSemiText("Register", AppColors.whiteText, 16),
-                      AppColors.detailText,
-                      200,
-                      50,
-                    ),
-                  ),
+                  // Center(
+                  //   child: setButton(
+                  //     controller.onRegisterTap,
+                  //     setSemiText("Register", AppColors.whiteText, 16),
+                  //     AppColors.detailText,
+                  //     200,
+                  //     50,
+                  //   ),
+                  // ),
 
-                  const SizedBox(height: 70),
+//                  const SizedBox(height: 70),
 
                   Center(
                     child: setTextButton(
@@ -143,15 +143,15 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
 
-                  Center(
-                    child: setButton(
-                      controller.onReqServiceTap,
-                      setSemiText("Request Road Service", AppColors.whiteText, 16),
-                      AppColors.titleText,
-                      MediaQuery.of(context).size.width - 40,
-                      50,
-                    ),
-                  ),
+                  // Center(
+                  //   child: setButton(
+                  //     controller.onReqServiceTap,
+                  //     setSemiText("Request Road Service", AppColors.whiteText, 16),
+                  //     AppColors.titleText,
+                  //     MediaQuery.of(context).size.width - 40,
+                  //     50,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

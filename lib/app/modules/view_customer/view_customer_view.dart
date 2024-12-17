@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/modules/view_customer/view_customer_controller.dart';
+import 'package:roadservicerepair/app/utils/DetailRow.dart';
 import 'package:roadservicerepair/app/utils/text_utl.dart';
 
 class CustomersView extends StatefulWidget {
@@ -52,71 +53,63 @@ class _CustomersViewState extends State<CustomersView> {
 
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Name :'),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(child: Text(customer['name']))
-                          ],
-                        ),
+                        // child: Row(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Text('Name :'),
+                        //     SizedBox(
+                        //       width: 10,
+                        //     ),
+                        //     Expanded(child: Text(customer['name']))
+                        //   ],
+                        // ),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Email :'),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(child: Text(customer['email']))
-                              ],
-                            ),
+                          DetailRow(
+                            label: 'Type :',
+                            value: customer['type'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Mobile_no :'),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(child: Text(customer['mobile_no']))
-                              ],
-                            ),
+                          DetailRow(
+                            label: 'Customer Type :',
+                            value: customer['cust_type'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Address :'),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(child: Text(customer['address']))
-                              ],
-                            ),
+                          DetailRow(
+                            label: 'Company Name :',
+                            value: customer['company_name'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Country :'),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(child: Text(customer['country_name']))
-                              ],
-                            ),
+                          DetailRow(
+                            label: 'Contact Person :',
+                            value: customer['contact_person'],
+                          ),
+                          DetailRow(
+                            label: 'Authorization :',
+                            value: customer['authorization'],
+                          ),
+                          DetailRow(
+                            label: 'Mobile No :',
+                            value: customer['mobile_no'],
+                          ),
+                          DetailRow(
+                            label: 'address :',
+                            value: customer['address'],
+                          ),
+                          DetailRow(
+                            label: 'email :',
+                            value: customer['email'],
+                          ),
+                          DetailRow(
+                            label: 'Country Name :',
+                            value: customer['country_name'],
+                          ),
+                          DetailRow(
+                            label: 'State Name :',
+                            value: customer['state_name'],
+                          ),
+                          DetailRow(
+                            label: 'City Name :',
+                            value: customer['city_name'],
                           ),
 
 

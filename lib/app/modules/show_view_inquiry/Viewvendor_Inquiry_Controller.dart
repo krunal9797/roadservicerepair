@@ -34,20 +34,16 @@ class ViewvendorInquiryController extends GetxController{
     String? email =prefs.getString('email');
     String? c_id =prefs.getString('c_id');
     print(email!+c_id!);
-
     try {
       final response = await http.post(Uri.parse(Api.SHOWINQUIRY),
           headers: {
             'Content-Type': 'application/json',
           },
-
           body: jsonEncode({
-
             'email': email,
             'city': c_id,
           })
       );
-
       print(c_id);
       print(response.body);
       if (response.statusCode == 200) {
@@ -65,22 +61,20 @@ class ViewvendorInquiryController extends GetxController{
 
 
   editInquiry(String? id ) async{
+
+    print("test "+id.toString());
     if (id == null) {
       Get.snackbar("Error", "ID cannot be null");
       return;
     }
 
-
     print( "pass"+id!);
-    try{
-      final response =await http.post(Uri.parse(Api.EDITINQUIRY),
+    try{final response =await http.post(Uri.parse(Api.EDITINQUIRY),
         headers: {
           'Content-Type': 'application/json',
         },
-
         body: jsonEncode({
           'id' : id
-
         }),
       );
       if (response.statusCode == 200) {
@@ -89,7 +83,6 @@ class ViewvendorInquiryController extends GetxController{
         if (jsonResponse['status'] != null && jsonResponse['status'] == 1) {
           final jsonResponse = jsonDecode(response.body);
           final list = jsonResponse['info'];
-
 
           print("RES_editInquiry "+list.toString());
 
@@ -108,17 +101,9 @@ class ViewvendorInquiryController extends GetxController{
         Get.snackbar("Error", "Server error: ${response.statusCode}");
       }
 
-
-
-
-
     }catch(e){
-
-
+      print(e.toString());
     }
-
-
-
 
   }
 

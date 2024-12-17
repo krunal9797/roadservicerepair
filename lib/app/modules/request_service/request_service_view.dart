@@ -39,249 +39,94 @@ class _ReqServiceViewState extends State<ReqServiceView> {
         body: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            setDropDown(
-              context,
-              "Select Service",
-              "Select service type",
-              controller.isServices,
-              controller.arrServices,
-              controller.onServiceSelect,
-
-            ),
-            const SizedBox(height: 15),
-            Obx(
-                  () => Visibility(
-                visible: controller.selectedService.value == "Truck Repair",
-                child: Column(
-                  children: [
-                    setDropDown(
-                      context,
-                      "Truck Make",
-                      "Select type of Truck",
-                      controller.isTruckMake,
-                      controller.arrTruckMake,
-                      controller.onTruckSelect,
-                    ),
-                    const SizedBox(height: 15),
-
-                  ],
-                ),
-              ),
-            ),
-            Obx(
-                  () => Visibility(
-                visible: controller.selectedService.value == "Truck Tire",
-                child: Column(
-                  children: [
-                    setDropDown(
-                      context,
-                      "Type of Tire",
-                      "Select type of tire",
-                      controller.isTypeOfTire,
-                      controller.arrTypeOfTire,
-                          (String? value) {
-                            controller.truck_tire_type =value!;
-
-                          },
-                    ),
-
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ),
-            ),
-            Obx(
-                  () => Visibility(
-                visible: controller.selectedTruck.value == "Other",
-                child: Column(
-                  children: [
-                    setTextField(
-                      context,
-                      "Other",
-                      "Enter truck",
-                      controller.isOtherMake,
-                      controller.txtOtherMake,
-                      controller.fnOtherMake,
-                    ),
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ),
-            ),
-            Obx(
-                  () => Visibility(
-                visible: controller.selectedService.value == "Trailer Tire",
-                child: Column(
-                  children: [
-                    setTextField(
-                      context,
-                      "Tire size",
-                      "Enter tire size",
-                      controller.isTrialerTire,
-                      controller.txtTrialerTire,
-                      controller.fnTrialerTire,
-                    ),
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ),
-            ),
-            Obx(
-                  () => Visibility(
-                visible: controller.selectedService.value == "Towing",
-                child: Column(
-                  children: [
-                    setDropDown(
-                      context,
-                      "Towing for",
-                      "Select vehicle",
-                      controller.isTowingSrv,
-                      controller.arrTowingSrv,
-                          (String? value) {
-                              print("Towing for"+value.toString());
-                             controller.towing_for =value!;
-
-                          },
-                    ),
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              ),
-            ),
             setTextField(
               context,
-              "VI Number.",
-              "Enter Vi number",
-              controller.isVi,
-              controller.txtVi,
-              controller.fnVi,
-            ),
-            const SizedBox(height: 15),
-
-            setTextField(
-              context,
-              "Mobile No.",
-              "Enter mobile number",
-              controller.isMobile,
-              controller.txtMobile,
-              controller.fnMobile,
+              "Service",
+              "Enter Service Name",
+              controller.isService,
+              controller.txtService,
+              controller.fnService,
             ),
             const SizedBox(height: 15),
             setTextField(
               context,
-              "Email",
-              "Enter Email",
-              controller.isEmail,
-              controller.txtEmail,
-              controller.fnEmail,
+              "Service For",
+              "Enter Service For ",
+              controller.isServiceFor,
+              controller.txtServiceFor,
+              controller.fnServiceFor,
             ),
             const SizedBox(height: 15),
-         Obx(() => controller.isLoadingCountry.value
-            ?Center(
-           child: SizedBox(
-             width: 24,  // Adjust the width as needed
-             height: 24, // Adjust the height as needed
-             child: CircularProgressIndicator(
-               strokeWidth: 2, // Adjust the thickness of the indicator
-             ),
-           ),
-         )
-           : setDropDown(
+            setTextField(
               context,
-              "Country",
-              "Select country",
-                controller.isCountry,
-                controller.arrCountry.map((info) => info.name ?? '').toList(),
-
-                    (String? value) {
-                  setState(() {
-                   var  CountryName = value;
-                    controller.selectedCountryId = controller.arrCountry.firstWhere(
-                          (info) => info.name == value,
-                      orElse: () => Info(id: '', shortname: '', name: '', phonecode: ''), // provide default value if not found
-                    ).id!;
-                    print(controller.selectedCountryId);
-                    controller.fetchStates(controller.selectedCountryId!);
-                  });
-                }
-    )),
-            const SizedBox(height: 15),
-         Obx(() => controller.isLoadingState.value
-         ? Center(
-           child: SizedBox(
-             width: 24,  // Adjust the width as needed
-             height: 24, // Adjust the height as needed
-             child: CircularProgressIndicator(
-               strokeWidth: 2, // Adjust the thickness of the indicator
-             ),
-           ),
-         )
-        :setDropDown(
-              context,
-              "State",
-              "Select state",
-              controller.isState,
-              controller.arrState.map((info) => info.name ?? '').toList(),
-                    (String? value) {
-                  setState(() {
-                    var stateName = value;
-                    controller.selectedStateId = controller.arrState.firstWhere(
-                          (info) => info.name == value,
-                      orElse: () => StateInfo(id: '', name: ''), // provide default value if not found
-                    ).id!;
-                    print(controller.selectedStateId);
-                    controller.fetchCities(controller.selectedStateId!);
-                  });
-                }
-
-         )),
-            const SizedBox(height: 15),
-    Obx(() => controller.isLoadingCity.value
-    ? Center(
-      child: SizedBox(
-        width: 24,  // Adjust the width as needed
-        height: 24, // Adjust the height as needed
-        child: CircularProgressIndicator(
-          strokeWidth: 2, // Adjust the thickness of the indicator
-        ),
-      ),
-    )
-        : setDropDown(
-              context,
-              "City",
-              "Select city",
-              controller.isCity,
-                controller.arrCity.map((info) => info.name ?? '').toList(),
-                    (String? value) {
-
-                  setState(() {
-                  var  cityName = value;
-                  controller.selectedCityId = controller.arrCity.firstWhere(
-                        (info) => info.name == value,
-                    orElse: () => CityInfo(id: '', name: ''), // provide default value if not found
-                  ).id!;
-
-                  });
-                },
-    )),
-            const SizedBox(height: 15),
-            setTextFormField(
-              context,
-              "Your Location",
-              "Enter your address",
-              controller.isAdrs,
-              controller.txtAdrs,
-              controller.fnAdrs,
+              "Type",
+              "Enter Type",
+              controller.isType,
+              controller.txtType,
+              controller.fnType,
             ),
             const SizedBox(height: 15),
-            setTextFormField(
+            setTextField(
               context,
-              "Request Information",
-              "Enter problem",
-              controller.isReqInfo,
-              controller.txtReqInfo,
-              controller.fnReqInfo,
+              "Name",
+              "Enter Name",
+              controller.isName,
+              controller.txtName,
+              controller.fnName,
             ),
+            const SizedBox(height: 15),
+            setTextField(
+              context,
+              "Unit Number",
+              "Enter Unit Number",
+              controller.isUnitNo,
+              controller.txtUnitNo,
+              controller.fnUnitNo,
+            ),
+            const SizedBox(height: 15),
+            setTextField(
+              context,
+              "Driver Number",
+              "Enter Driver Number",
+              controller.isDriverNo,
+              controller.txtDriverNo,
+              controller.fnDriverNo,
+            ),
+
+            const SizedBox(height: 15),
+            setTextField(
+              context,
+              "Remark",
+              "Enter Remark",
+              controller.isRemark,
+              controller.txtRemark,
+              controller.fnRemark,
+            ),
+            const SizedBox(height: 15),
+            Stack(
+              children: [
+                // Address Input Field
+                setTextFormField(context, "Address", "Enter address", controller.isAddress,
+                    controller.txtAddress, controller.fnAddress),
+                // Location Icon Button
+                Positioned(
+                  right: 20, // Align to the right
+                  top: 0, // Align to the top of the field
+                  bottom: 0, // Align to the bottom of the field
+                  child:IconButton(
+                    icon: const Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                      size: 30, // Set the size of the icon here
+                    ),
+                    onPressed: () {
+                      controller.fetchCurrentLocation(controller.txtAddress);
+                    },
+                  ),
+                ),
+              ],
+            ),
+
             const SizedBox(height: 30),
             Center(
               child: InkWell(

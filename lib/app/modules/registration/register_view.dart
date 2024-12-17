@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/constants/util.dart';
+import 'package:roadservicerepair/app/modules/registration/register_controller.dart';
 import 'package:roadservicerepair/app/utils/button_utl.dart';
 import 'package:roadservicerepair/app/utils/drop_down_utl.dart';
 import 'package:roadservicerepair/app/utils/global.dart';
@@ -34,7 +35,9 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  RxInt userType = 1.obs;
+  final RegisterController controller = RegisterController();
+  // RxInt userType = 1.obs;
+  late RxInt userType;
   RxBool isSecure = false.obs;
   String? cust_type;
   String? vendorFor;
@@ -58,12 +61,19 @@ class _RegisterViewState extends State<RegisterView> {
   final isPhone = GlobalKey<ShakeWidgetState>();
   final isAdd = GlobalKey<ShakeWidgetState>();
   final isEmail = GlobalKey<ShakeWidgetState>();
+  final isContactPerson = GlobalKey<ShakeWidgetState>();
+  final isWorkingHour = GlobalKey<ShakeWidgetState>();
+  final isAuthorization = GlobalKey<ShakeWidgetState>();
+
   final isPassword = GlobalKey<ShakeWidgetState>();
   TextEditingController txtCompanyName = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
   TextEditingController txtAdd = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+  TextEditingController txtWorkingHours = TextEditingController();
+  TextEditingController txtAuthorization = TextEditingController();
+  TextEditingController txtContactPerson = TextEditingController();
 
   //FocusNode
   FocusNode fnCompanyName = FocusNode();
@@ -71,6 +81,12 @@ class _RegisterViewState extends State<RegisterView> {
   FocusNode fnAdd = FocusNode();
   FocusNode fnEmail = FocusNode();
   FocusNode fnPassword = FocusNode();
+
+  FocusNode fnContactPerson = FocusNode();
+  FocusNode fnWorkingHour = FocusNode();
+  FocusNode fnAuthorization = FocusNode();
+
+
   List<String> arrCustomerType = ["Owner", "Manager", "Driver"];
   List<String> arrVendorType = ["Owner", "Manager", "Mechanic"];
   List<String> arrCustFor = ["Company", "Shop", "Individual"];
@@ -81,6 +97,13 @@ class _RegisterViewState extends State<RegisterView> {
     "Tier Repair",
     "Towing Service"
   ];
+
+  List<String> prices = List.generate(
+    11, // From 500 to 1000 in 50 increments -> (1000 - 500) / 50 + 1 = 11
+        (index) => "\$${500 + (index * 50)}",
+  );
+  String selectedPrice = "\$500";
+
   List<Info> arrCountry = [];
   List<StateInfo> arrState = [];
   List<CityInfo> arrCity = [];
@@ -93,6 +116,8 @@ class _RegisterViewState extends State<RegisterView> {
     // TODO: implement initState
     super.initState();
    // _requestPermissions();
+    userType = (Get.arguments as int).obs;
+    print("user tyep "+userType.toString());
     fetchCountries();
 
   }
@@ -197,7 +222,22 @@ class _RegisterViewState extends State<RegisterView> {
         request.fields['email'] = txtEmail.text.trim();
         request.fields['password'] = txtPassword.text.trim();
         request.fields['user_type'] = userType.value.toString();
+        request.fields['contact_person'] = txtContactPerson.text.toString();
         request.fields['fcm_token'] = fcmToken.toString();
+
+        if(userType==1){
+
+          request.fields['authorization'] = txtAuthorization.text.toString();
+
+        }else if(userType==2)
+          {
+            request.fields['working_hours'] = txtWorkingHours.text.toString();
+          }else{
+
+        }
+        //customer authorization
+        // authorization 500 to 100$ dropdown
+        // and vendor ma working hours
 
         // Add image file
         if (imagePath != null && imagePath!.path.isNotEmpty) {
@@ -238,6 +278,8 @@ class _RegisterViewState extends State<RegisterView> {
         'state': selectedStateId ?? '',
         'city': selectedCityId ?? '',
         'address': txtAdd.text.trim(),
+        'working_hours': txtWorkingHours.text.trim(),
+        'authorization': txtAuthorization.text.trim(),
         'email': txtEmail.text.trim(),
         'password': txtPassword.text.trim(),
         'selectedImage': imagePath,
@@ -246,77 +288,6 @@ class _RegisterViewState extends State<RegisterView> {
       });
     }
   }
-  // Future<void> register() async {
-  //    if (_validateForm()) {
-  //     try {
-  //
-  //
-  //       final response = await http.post(
-  //         Uri.parse(Api.REGISTER),
-  //         /*headers: {
-  //           'Content-Type': 'application/json',
-  //         },*/
-  //           body:{
-  //             'type': userType.value == 2 ? (vendorType ?? '') : '',
-  //             'cust_type': userType.value == 2 ? (vendorFor ?? '') : '',
-  //             'service_type': userType.value == 2 ? (typeOfService ?? '') : '',
-  //             'type_cust': userType.value == 1 ? (cust_type ?? '') : '',
-  //             'typecust': userType.value == 1 ? (selectCustomerFor ?? '') : '',
-  //             'name': txtCompanyName.text.trim(),
-  //             'mobile_no': txtPhone.text.trim(),
-  //             'country': selectedCountryId ?? '',
-  //             'state': selectedStateId ?? '',
-  //             'city': selectedCityId ?? '',
-  //             'address': txtAdd.text.trim(),
-  //             'email': txtEmail.text.trim(),
-  //             'password': txtPassword.text.trim(),
-  //             'image': imagePath.toString(),
-  //             'user_type': userType.value.toString(),
-  //
-  //           }
-  //       );
-  //           if (response.statusCode == 200) {
-  //
-  //         // Registration successful, handle next steps
-  //         final   jsonResponse = jsonDecode(response.body);
-  //
-  //
-  //         print('Registration successful'+response.body);
-  //         Get.snackbar("Success", jsonResponse['msg']);
-  //
-  //         navigator?.pop();
-  //       } else {
-  //      // Handle error response
-  //      Get.snackbar("Error", "Registration failed");
-  //    }
-  // } catch (e) {
-  //   print(e);
-  //   Get.snackbar("Error", e.toString());
-  //   }
-  //
-  //   print({
-  //   'type': userType.value == 2 ? (vendorType ?? '') : '',
-  //   'cust_type': userType.value == 2 ? (vendorFor ?? '') : '',
-  //   'service_type': userType.value == 2 ? (typeOfService ?? '') : '',
-  //   'type_cust': userType.value == 1 ? (cust_type ?? '') : '',
-  //   'typecust': userType.value == 1 ? (selectCustomerFor ?? '') : '',
-  //   'name': txtCompanyName.text.trim(),
-  //   'mobile_no': txtPhone.text.trim(),
-  //   'country': selectedCountryId ?? '',
-  //   'state': selectedStateId ?? '',
-  //   'city': selectedCityId ?? '',
-  //   'address': txtAdd.text.trim(),
-  //   'email': txtEmail.text.trim(),
-  //   'password': txtPassword.text.trim(),
-  //   'selectedImage':imagePath,
-  //   'user_type': userType.value.toString(),
-  //   });
-  //
-  //
-  //    }
-  //
-  //
-  // }
 
   bool _validateForm() {
     bool isValid = true;
@@ -528,66 +499,60 @@ class _RegisterViewState extends State<RegisterView> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Center(
-                    child:
-                        setRegularText("Select Type", AppColors.titleText, 16),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Obx(
-                    () => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
 
-                        GestureDetector(
-                          onTap: () {
-                            onUserTypeTapped(1);
-                          },
-                          child: Container(
-                            height: 50,
-                            width: getScreenWidth(context) / 2 - 30,
-                            decoration: BoxDecoration(
-                              color: userType.value == 1
-                                  ? AppColors.titleText
-                                  : AppColors.whiteText,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            alignment: Alignment.center,
-                            child: setRegularText(
-                                "Customer",
-                                userType.value == 1
-                                    ? AppColors.whiteText
-                                    : AppColors.titleText,
-                                14),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            onUserTypeTapped(2);
-                          },
-                          child: Container(
-                            height: 50,
-                            width: getScreenWidth(context) / 2 - 30,
-                            decoration: BoxDecoration(
-                              color: userType.value == 2
-                                  ? AppColors.titleText
-                                  : AppColors.whiteText,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            alignment: Alignment.center,
-                            child: setRegularText(
-                              "Vendor",
-                              userType.value == 2
-                                  ? AppColors.whiteText
-                                  : AppColors.titleText,
-                              14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Obx(
+                  //   () => Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     children: [
+                  //
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           onUserTypeTapped(1);
+                  //         },
+                  //         child: Container(
+                  //           height: 50,
+                  //           width: getScreenWidth(context) / 2 - 30,
+                  //           decoration: BoxDecoration(
+                  //             color: userType.value == 1
+                  //                 ? AppColors.titleText
+                  //                 : AppColors.whiteText,
+                  //             borderRadius: BorderRadius.circular(15),
+                  //           ),
+                  //           alignment: Alignment.center,
+                  //           child: setRegularText(
+                  //               "Customer",
+                  //               userType.value == 1
+                  //                   ? AppColors.whiteText
+                  //                   : AppColors.titleText,
+                  //               14),
+                  //         ),
+                  //       ),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           onUserTypeTapped(2);
+                  //         },
+                  //         child: Container(
+                  //           height: 50,
+                  //           width: getScreenWidth(context) / 2 - 30,
+                  //           decoration: BoxDecoration(
+                  //             color: userType.value == 2
+                  //                 ? AppColors.titleText
+                  //                 : AppColors.whiteText,
+                  //             borderRadius: BorderRadius.circular(15),
+                  //           ),
+                  //           alignment: Alignment.center,
+                  //           child: setRegularText(
+                  //             "Vendor",
+                  //             userType.value == 2
+                  //                 ? AppColors.whiteText
+                  //                 : AppColors.titleText,
+                  //             14,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
                   Center(
                     child: Stack(
@@ -692,11 +657,16 @@ class _RegisterViewState extends State<RegisterView> {
                   const SizedBox(height: 15),
                   setTextField(
                       context,
-                      "Owner/Vendor Or Company Name",
-                      "Enter Owner/Vendor Or Company Name",
+                      "Company Name",
+                      "Company Name",
                       isCompanyName,
                       txtCompanyName,
                       fnCompanyName),
+                  //contact person
+                  const SizedBox(height: 15),
+                  setTextField(context, "Contact Person", "Enter Contact Person", isContactPerson,
+                      txtContactPerson, fnContactPerson),
+
                   const SizedBox(height: 15),
                   setTextField(context, "Phone Number", "Enter phone number",
                       isPhone, txtPhone, fnPhone),
@@ -790,8 +760,55 @@ class _RegisterViewState extends State<RegisterView> {
 
                   ),
                   const SizedBox(height: 15),
-                  setTextFormField(context, "Address", "Enter address", isAdd,
-                      txtAdd, fnAdd),
+                  Stack(
+                    children: [
+                      // Address Input Field
+                      setTextFormField(context, "Address", "Enter address", isAdd,
+                          txtAdd, fnAdd),
+                      // Location Icon Button
+                      Positioned(
+                        right: 20, // Align to the right
+                        top: 0, // Align to the top of the field
+                        bottom: 0, // Align to the bottom of the field
+                        child:IconButton(
+                          icon: const Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 30, // Set the size of the icon here
+                          ),
+                          onPressed: () {
+                            controller.fetchCurrentLocation(txtAdd);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+
+
+
+                  const SizedBox(height: 15),
+                  if (userType == 2)
+                    setTextField(
+                      context,
+                      "Working Hour",
+                      "Enter Working Hour",
+                      isWorkingHour,
+                      txtWorkingHours,
+                      fnWorkingHour,
+                    )
+                  else
+                    setDropdownField(
+                      context,
+                      "Select Price",
+                      prices,
+                      selectedPrice,
+                          (value) {
+                        setState(() {
+                          selectedPrice = value ?? "\$500";
+                        });
+                      },
+                    ),
                   const SizedBox(height: 15),
                   setTextField(context, "Email", "Enter email", isEmail,
                       txtEmail, fnEmail),

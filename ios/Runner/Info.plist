@@ -46,4 +46,13 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>We need your location to provide relevant services</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>We need your location to provide services even in the background</string>
+<key>UIBackgroundModes</key>
+<array>
+    <string>location</string>
+</array>
+
 </plist>

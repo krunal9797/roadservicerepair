@@ -34,255 +34,124 @@ class _EditinquiryState extends State<Editinquiry> {
           padding: const EdgeInsets.all(20),
           children: [
             const SizedBox(height: 15),
-
-
             setTextField1(
               context,
-              "Name.",
+              "Service",
+              "Enter Service Name",
+              controller.isService,
+              controller.txtService,
+              controller.fnService,
+            ),
+            const SizedBox(height: 15),
+            setTextField1(
+              context,
+              "Service For",
+              "Enter Service For",
+              controller.isServiceFor,
+              controller.txtServiceFor,
+              controller.fnServiceFor,
+            ),
+            const SizedBox(height: 15),
+            setTextField1(
+              context,
+              "Type",
+              "Enter Type",
+              controller.isType,
+              controller.txtType,
+              controller.fnType,
+            ),
+            const SizedBox(height: 15),
+            setTextField1(
+              context,
+              "Name",
               "Enter Name",
               controller.isName,
               controller.txtName,
               controller.fnName,
             ),
-
-
-
-
             const SizedBox(height: 15),
-
             setTextField1(
               context,
-              "Service.",
-              "Enter service",
-              controller.isServices,
-              controller.txtServices,
-              controller.fnServices,
+              "Unit Number",
+              "Enter Unit No",
+              controller.isUnitNumber,
+              controller.txtUnitNumber,
+              controller.fnUnitNumber,
             ),
             const SizedBox(height: 15),
             setTextField1(
               context,
-              "truck_make.",
-              "Enter truck_make",
-              controller.isTruck_make,
-              controller.txtTruck_make,
-              controller.fnTruck_make,
+              "Address",
+              "Enter Address",
+              controller.isAddress,
+              controller.txtAddress,
+              controller.fnAddress,
             ),
             const SizedBox(height: 15),
             setTextField1(
               context,
-              "make_other.",
-              "Enter make_other",
-              controller.isMake_other,
-              controller.txtMake_other,
-              controller.fnMake_other,
+              "Remark",
+              "Enter Remark",
+              controller.isRemark,
+              controller.txtRemark,
+              controller.fnRemark,
             ),
             const SizedBox(height: 15),
             setTextField1(
               context,
-              "vi_number.",
-              "Enter vi_number",
-              controller.isvi_number,
-              controller.txtvi_number,
-              controller.fnvi_number,
-            ),
-
-            const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "tire_type.",
-              "Enter tire_type",
-              controller.isTire_type,
-              controller.txtTire_type,
-              controller.fnTire_type,
-            ),
-            const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "tire_size.",
-              "Enter tire_size",
-              controller.isTire_size,
-              controller.txtTire_size,
-              controller.fnTire_size,
-            ),
-            const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "towing_for.",
-              "Enter towing_for",
-              controller.istowing_for,
-              controller.txttowing_for,
-              controller.fntowing_for,
-            ),
-            const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "country_name.",
-              "Enter country_name",
-              controller.iscountry_name,
-              controller.txtcountry_name,
-              controller.fncountry_name,
-            ), const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "state_name.",
-              "Enter state_name",
-              controller.isstate_name,
-              controller.txtstate_name,
-              controller.fnstate_name,
-            ), const SizedBox(height: 15),
-
-            setTextField1(
-              context,
-              "city_name.",
-              "Enter city_name",
-              controller.iscity_name,
-              controller.txtcity_name,
-              controller.fncity_name,
-            ),
-
-
-            const SizedBox(height: 15),
-
-
-            setTextField1(
-              context,
-              "Mobile No.",
-              "Enter mobile number",
-              controller.isMobile,
-              controller.txtMobile,
-              controller.fnMobile,
+              "Estimate Time",
+              "Enter Estimate Time",
+              controller.isEstTime,
+              controller.txtEstTime,
+              controller.fnEstTime,
             ),
             const SizedBox(height: 15),
             setTextField1(
               context,
-              "Email",
-              "Enter Email",
-              controller.isEmail,
-              controller.txtEmail,
-              controller.fnEmail,
+              "Estimate Price",
+              "Enter Estimate Price",
+              controller.isEstPrice,
+              controller.txtEstPrice,
+              controller.fnEstPrice,
             ),
             const SizedBox(height: 15),
-
-
-
-
-
-            // customer
-            // setTextField1(
-            //   context,
-            //   "Customer Name",
-            //   "Name",
-            //   controller.isCustomerName,
-            //   controller.txtCustomerName,
-            //   controller.fnCustomerName,
-            // ),
-            // const SizedBox(height: 15),
-            // setTextField1(
-            //   context,
-            //   "Customer Email",
-            //   "Email",
-            //   controller.isCustomerEmail,
-            //   controller.txtCustomerEmail,
-            //   controller.fnCustomerEmail,
-            // ),
-            // const SizedBox(height: 15),
-            // setTextField1(
-            //   context,
-            //   "Customer MobileNo",
-            //   "Mobile Number",
-            //   controller.isCustomerNumber,
-            //   controller.txtCustomerNumber,
-            //   controller.fnCustomerNumber,
-            // ),
-            // const SizedBox(height: 15),
-            // end customer
-
-            setTextFormField1(
+            setTextField1(
               context,
-              "Your Location",
-              "Enter your address",
-              controller.isAdrs,
-              controller.txtAdrs,
-              controller.fnAdrs,
+              "Vendor Name",
+              "Enter Vendor Name",
+              controller.isVendorName,
+              controller.txtVendorName,
+              controller.fnVendorName,
             ),
-            const SizedBox(height: 15),
 
-            setTextField(
+            const SizedBox(height: 15),
+            setTextField1(
               context,
-              "Time",
-              "Enter Time",
-              controller.isest_time,
-              controller.txtest_time,
-              controller.fnest_time,
+              "Vendor Email",
+              "Enter Vendor Email Name",
+              controller.isVendorEmail,
+              controller.txtVendorEmail,
+              controller.fnVendorEmail,
             ),
-            const SizedBox(height: 15),
 
-            setTextField(
+            const SizedBox(height: 15),
+            setTextField1(
               context,
-              "Price",
-              "Enter your Price",
-              controller.isest_price,
-              controller.txtest_price,
-              controller.fnest_price,
+              "Vendor Mobile",
+              "Enter Vendor Mobile",
+              controller.isVendorMobile,
+              controller.txtVendorMobile,
+              controller.fnVendorMobile,
             ),
             const SizedBox(height: 15),
-            // setTextFormField1(
-            //   context,
-            //   "Request Information",
-            //   "Enter problem",
-            //   controller.isReqInfo,
-            //   controller.txtReqInfo,
-            //   controller.fnReqInfo,
-            // ),
-            const SizedBox(height: 30),
-
-
- //            Center(
- //              child: Obx(() {
- //              /*  if (controller.status.value == 0) {
- //
- //                } else {
- //                  return SizedBox(); // Hide image when status is not 0
- //
- //                }
- // */
- //                return Image.network(
- //                  controller.imageurl.value,
- //                  width: 100,
- //                  height: 80,
- //                  fit: BoxFit.cover,
- //                );
- //              }),
- //            ),
-
-
-
-            // Center(
-            //   child: InkWell(
-            //     onTap: () {
-            //       print('click');
-            //       controller.showImagePickerOption(context);
-            //     },
-            //     child: Obx(
-            //           () => controller.imagePath.value == null
-            //           ? Image.asset(
-            //         'assets/images/add.jpg',
-            //         width: 150,
-            //         height: 100,
-            //       )
-            //           : Image.file(
-            //         controller.imagePath.value as File ,
-            //         width: 150,
-            //         height: 100,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            setTextField1(
+              context,
+              "Vendor Address",
+              "Enter Vendor Address",
+              controller.isVendorAddress,
+              controller.txtVendorAddress,
+              controller.fnVendorAddress,
+            ),
              const SizedBox(height: 20),
             Center(
               child: setButton(

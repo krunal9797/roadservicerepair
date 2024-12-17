@@ -2,15 +2,13 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
-import 'package:roadservicerepair/app/modules/profile/profile_controller.dart';
+import 'package:roadservicerepair/app/utils/DataWidget.dart';
 import 'package:roadservicerepair/app/utils/button_utl.dart';
-import 'package:roadservicerepair/app/utils/text_utl.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/Api.dart';
@@ -44,10 +42,23 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  String name = '';
-  String number = '';
+  String u_id = '';
+  String type = '';
+  String cust_type = '';
+  String working_hours = '';
+  String company_name = '';
+  String contact_person = '';
+  String authorization = '';
+  String service_type = '';
+  String mobile_no = '';
+  String country_name = '';
+  String state_name = '';
+  String city_name = '';
   String address = '';
+  String email = '';
   String image = '';
+  String user_type = '';
+
   late SharedPreferences prefs;
   late FirebaseMessaging _messaging;
   int _totalNotifications = 0;
@@ -152,10 +163,22 @@ class _ProfileViewState extends State<ProfileView> {
           final data = jsonResponse['info'];
           print(data['image']);
 
-          name = data['name'];
-          number = data['mobile_no'];
+          u_id = data['u_id'];
+          type = data['type'];
+          cust_type = data['cust_type'];
+          working_hours = data['working_hours'];
+          company_name = data['company_name'];
+          contact_person = data['contact_person'];
+          authorization = data['authorization'];
+          service_type = data['service_type'];
+          mobile_no = data['mobile_no'];
+          country_name = data['country_name'];
+          state_name = data['state_name'];
+          city_name = data['city_name'];
           address = data['address'];
+          email = data['email'];
           image = data['image'];
+          user_type = data['user_type'];
 
           // SharedPreferences prefs = await SharedPreferences.getInstance();
           //   prefs.setString('email', jsonResponse['info']['email'].toString());
@@ -190,17 +213,138 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
         const SizedBox(height: 20),
-        setSemiText("Name", AppColors.titleText, 14),
-        const SizedBox(height: 5),
-        setRegularText(name, AppColors.titleText, 16),
-        const SizedBox(height: 20),
-        setSemiText("Phone Number", AppColors.titleText, 14),
-        const SizedBox(height: 5),
-        setRegularText(number, AppColors.titleText, 16),
-        const SizedBox(height: 20),
-        setSemiText("Address", AppColors.titleText, 14),
-        const SizedBox(height: 5),
-        setRegularText(address, AppColors.titleText, 16),
+        DataWidget(
+          label: "Type",
+          phoneNumber: type,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+        DataWidget(
+          label: "Customer Type",
+          phoneNumber: cust_type,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+        DataWidget(
+          label: "Working Hours",
+          phoneNumber: working_hours,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+        DataWidget(
+          label: "Company Name",
+          phoneNumber: company_name,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Contact Person",
+          phoneNumber: contact_person,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Authorization",
+          phoneNumber: authorization,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Service Type",
+          phoneNumber: service_type,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Mobile No",
+          phoneNumber: mobile_no,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Country Name",
+          phoneNumber: country_name,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+        DataWidget(
+          label: "State Name",
+          phoneNumber: state_name,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "City Name",
+          phoneNumber: city_name,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Address",
+          phoneNumber: address,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Email",
+          phoneNumber: email,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+        DataWidget(
+          label: "Email",
+          phoneNumber: email,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
+
+        DataWidget(
+          label: "Phone Number",
+          phoneNumber: mobile_no,
+          labelColor: AppColors.titleText,
+          phoneNumberColor: AppColors.titleText,
+          labelFontSize: 14,
+          phoneNumberFontSize: 16,
+        ),
+
         const SizedBox(height: 5),
         setTextButton(() {
           // Confirm before deleting
@@ -217,8 +361,7 @@ class _ProfileViewState extends State<ProfileView> {
               Get.back(); // Close the dialog
             },
           );
-        }, Text("Delete Account"))  // Wrap the string with Text widget
-
+        }, Text("Delete Account")) // Wrap the string with Text widget
       ],
     );
   }
@@ -244,10 +387,13 @@ class _ProfileViewState extends State<ProfileView> {
         return;
       }
 
-      var request = http.Request('POST', Uri.parse('https://roadservice.roadservicerepair.com/api/delete_profile.php'));
+      var request = http.Request(
+          'POST',
+          Uri.parse(
+              'https://roadservice.roadservicerepair.com/api/delete_profile.php'));
 
       request.body = json.encode({
-        "u_id": userId,  // Pass the user ID as a string
+        "u_id": userId, // Pass the user ID as a string
       });
 
       request.headers.addAll(headers);
@@ -267,13 +413,12 @@ class _ProfileViewState extends State<ProfileView> {
       } else {
         print(response.reasonPhrase);
         Get.back(); // Close the dialog
-        Get.snackbar("Error", "Failed to delete account: ${response.reasonPhrase}");
+        Get.snackbar(
+            "Error", "Failed to delete account: ${response.reasonPhrase}");
       }
     } catch (e) {
       print(e);
       Get.snackbar("Error", "An error occurred: ${e.toString()}");
     }
   }
-
-
 }

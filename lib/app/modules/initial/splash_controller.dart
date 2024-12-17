@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:roadservicerepair/app/modules/login/login_view.dart';
+import 'package:roadservicerepair/app/modules/home/home_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../side_bar/side_bar_view.dart';
@@ -19,7 +20,7 @@ class SplashController extends GetxController {
           if (await isLoggedIn()) {
             Get.off(() => const SideBarView()); // Navigate to HomeView if logged in
           } else {
-            Get.off(() => const LoginView()); // Navigate to LoginView if not logged in
+            Get.off(() => const HomeView()); // Navigate to LoginView if not logged in
           }
         }
     );

@@ -57,42 +57,37 @@ class RequestController extends GetxController {
   List<CityInfo> arrCity = [];
 
   //Shake Key
-  final isVi = GlobalKey<ShakeWidgetState>();
-  final isServices = GlobalKey<ShakeWidgetState>();
-  final isTruckMake = GlobalKey<ShakeWidgetState>();
-  final isOtherMake = GlobalKey<ShakeWidgetState>();
-  final isTypeOfTire = GlobalKey<ShakeWidgetState>();
-  final isTruckTire = GlobalKey<ShakeWidgetState>();
-  final isTrialerTire = GlobalKey<ShakeWidgetState>();
-  final isTowingSrv = GlobalKey<ShakeWidgetState>();
-  final isCountry = GlobalKey<ShakeWidgetState>();
-  final isState = GlobalKey<ShakeWidgetState>();
-  final isCity = GlobalKey<ShakeWidgetState>();
+  final isService = GlobalKey<ShakeWidgetState>();
+  final isServiceFor = GlobalKey<ShakeWidgetState>();
+  final isType = GlobalKey<ShakeWidgetState>();
+  final isName = GlobalKey<ShakeWidgetState>();
+  final isUnitNumber = GlobalKey<ShakeWidgetState>();
+  final isDriverNumber = GlobalKey<ShakeWidgetState>();
+  final isAddress = GlobalKey<ShakeWidgetState>();
+  final isRemark = GlobalKey<ShakeWidgetState>();
 
-  final isMobile = GlobalKey<ShakeWidgetState>();
-  final isEmail = GlobalKey<ShakeWidgetState>();
-  final isAdrs = GlobalKey<ShakeWidgetState>();
-  final isReqInfo = GlobalKey<ShakeWidgetState>();
 
   //Controller
-  TextEditingController txtTruckTire = TextEditingController();
-  TextEditingController txtTrialerTire = TextEditingController();
-  TextEditingController txtMobile = TextEditingController();
-  TextEditingController txtEmail = TextEditingController();
-  TextEditingController txtAdrs = TextEditingController();
-  TextEditingController txtReqInfo = TextEditingController();
-  TextEditingController txtOtherMake = TextEditingController();
-  TextEditingController txtVi = TextEditingController();
+  TextEditingController txtService = TextEditingController();
+  TextEditingController txtServiceFor = TextEditingController();
+  TextEditingController txtType = TextEditingController();
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtUnitNumber = TextEditingController();
+  TextEditingController txtDriverNumber = TextEditingController();
+  TextEditingController txtAddress = TextEditingController();
+  TextEditingController txtRemark = TextEditingController();
+
 
   //FocusNode
-  FocusNode fnVi = FocusNode();
-  FocusNode fnTruckTire = FocusNode();
-  FocusNode fnOtherMake = FocusNode();
-  FocusNode fnTrialerTire = FocusNode();
-  FocusNode fnMobile = FocusNode();
-  FocusNode fnEmail = FocusNode();
-  FocusNode fnAdrs = FocusNode();
-  FocusNode fnReqInfo = FocusNode();
+  FocusNode fnService = FocusNode();
+  FocusNode fnServiceFor = FocusNode();
+  FocusNode fnType = FocusNode();
+  FocusNode fnName = FocusNode();
+  FocusNode fnUnitNumber = FocusNode();
+  FocusNode fnDriverNumber = FocusNode();
+  FocusNode fnAddress = FocusNode();
+  FocusNode fnRemark = FocusNode();
+
   var isLoadingCountry = false.obs;
   var isLoadingState = false.obs;
   var isLoadingCity = false.obs;
@@ -106,7 +101,7 @@ class RequestController extends GetxController {
     //  pageTitle.value = data;
     print("RequestController");
     getList();
-    fetchCountries();
+    //fetchCountries();
 
     super.onInit();
   }
@@ -123,56 +118,10 @@ class RequestController extends GetxController {
 
   getList() async {
     prefs = await SharedPreferences.getInstance();
-    txtMobile.text = prefs.getString("mobile_no")!;
-    txtEmail.text = prefs.getString("email")!;
+    txtDriverNumber.text = prefs.getString("mobile_no")!;
+    // txtEmail.text = prefs.getString("email")!;
   }
 
-  Future<void> fetchStates(String countryId) async {
-    isLoadingState.value = true;
-
-    final response = await http.post(
-      Uri.parse(Api.STATE),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'country_id': countryId,
-      }),
-    );
-    if (response.statusCode == 200) {
-      // Assuming you have a similar structure for State response as Country
-      StateData stateData = StateData.fromJson(json.decode(response.body));
-
-      arrState = stateData.info ?? [];
-    } else {
-      // Handle the error
-      print('Failed to load states');
-    }
-    isLoadingState.value = false;
-  }
-
-  Future<void> fetchCities(String stateId) async {
-    isLoadingCity.value = true;
-    final response = await http.post(
-      Uri.parse(Api.CITY),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'state_id': stateId,
-      }),
-    );
-    if (response.statusCode == 200) {
-      // Assuming you have a similar structure for State response as Country
-      CityData cityData = CityData.fromJson(json.decode(response.body));
-
-      arrCity = cityData.info ?? [];
-    } else {
-      // Handle the error
-      print('Failed to load states');
-    }
-    isLoadingCity.value = false;
-  }
 
   onServiceSelect(String? value) {
     selectedService.value = value ?? '';
@@ -368,96 +317,65 @@ class RequestController extends GetxController {
   //   print(imagePath);
   //   Navigator.of(context).pop();
   // }
-  bool validateInputs() {
-    bool isValid = true;
-
-    if (selectedService.value.isEmpty) {
-      isServices.currentState?.shake();
-      isValid = false;
-    }
-
-    if (txtMobile.text.isEmpty) {
-      isMobile.currentState?.shake();
-      isValid = false;
-    }
-    if (txtEmail.text.isEmpty) {
-      isEmail.currentState?.shake();
-      isValid = false;
-    }
-
-    if (txtAdrs.text.isEmpty) {
-      isAdrs.currentState?.shake();
-      isValid = false;
-    }
-
-    if (txtReqInfo.text.isEmpty) {
-      isReqInfo.currentState?.shake();
-      isValid = false;
-    }
-
-    /*if (imagePath.value == null || imagePath.value!.path.isEmpty) {
-      Get.snackbar("Error", "Select Image", snackPosition: SnackPosition.BOTTOM);
-      isValid = true;
-    }*/
-
-    return isValid;
-  }
+  // bool validateInputs() {
+  //   bool isValid = true;
+  //
+  //   if (selectedService.value.isEmpty) {
+  //     isServices.currentState?.shake();
+  //     isValid = false;
+  //   }
+  //
+  //   if (txtMobile.text.isEmpty) {
+  //     isMobile.currentState?.shake();
+  //     isValid = false;
+  //   }
+  //   if (txtEmail.text.isEmpty) {
+  //     isEmail.currentState?.shake();
+  //     isValid = false;
+  //   }
+  //
+  //   if (txtAdrs.text.isEmpty) {
+  //     isAdrs.currentState?.shake();
+  //     isValid = false;
+  //   }
+  //
+  //   if (txtReqInfo.text.isEmpty) {
+  //     isReqInfo.currentState?.shake();
+  //     isValid = false;
+  //   }
+  //
+  //   /*if (imagePath.value == null || imagePath.value!.path.isEmpty) {
+  //     Get.snackbar("Error", "Select Image", snackPosition: SnackPosition.BOTTOM);
+  //     isValid = true;
+  //   }*/
+  //
+  //   return isValid;
+  // }
 
   Future<void> sendNow(BuildContext context) async {
-    if (!validateInputs()) {
-      Get.snackbar("Error", "Please fill all required fields",
-          snackPosition: SnackPosition.BOTTOM);
-      return;
-    }
+    // if (!validateInputs()) {
+    //   Get.snackbar("Error", "Please fill all required fields",
+    //       snackPosition: SnackPosition.BOTTOM);
+    //   return;
+    // }
 
     isLoading.value = true;
 
     try {
       var uri = Uri.parse(Api.REQUEST_SERVICE);
       var request = http.MultipartRequest('POST', uri);
-      request.fields['service'] = selectedService.value;
-      request.fields['truck_tire_type'] =
-          selectedService.value == "Truck Tire" ? truck_tire_type : '';
-      request.fields['tire_size'] = (selectedService.value == "Truck Tire" ||
-              selectedService.value == "Trailer Tire")
-          ? txtTrialerTire.text ?? ''
-          : '';
-      request.fields['towing_for'] =
-          selectedService.value == "Towing" ? towing_for : '';
-      request.fields['mobile_no'] = txtMobile.text;
-      request.fields['email'] = txtEmail.text;
-      request.fields['country'] = selectedCountryId;
 
-      request.fields['state'] = selectedStateId;
-      request.fields['city'] = selectedCityId;
-      request.fields['address'] = txtAdrs.text;
-      request.fields['remark'] = txtReqInfo.text;
-      request.fields['truck_make'] = selectedTruck.value;
-      request.fields['make_other'] =
-          selectedTruck.value == "Other" ? txtOtherMake.text : '';
-      request.fields['vi_number'] = txtVi.text;
+      request.fields['service'] = txtService.text;
+      request.fields['service_for'] = txtServiceFor.text;
+      request.fields['type'] = txtType.text;
+      request.fields['name'] = txtName.text;
+      request.fields['unit_number'] = txtUnitNumber.text;
+      request.fields['driver_number'] = txtDriverNumber.text;
+      request.fields['address'] = txtAddress.text;
+      request.fields['remark'] = txtRemark.text;
 
-      if (imagePath != null && imagePath.value!.path.isNotEmpty) {
-        request.files.add(
-            await http.MultipartFile.fromPath('image', imagePath.value!.path));
-      }else{
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath.value!.path));
 
-      }
-
-      print('service: ${request.fields['service']}');
-      print('truck_tire_type: ${request.fields['truck_tire_type']}');
-      print('tire_size: ${request.fields['tire_size']}');
-      print('towing_for: ${request.fields['towing_for']}');
-      print('mobile_no: ${request.fields['mobile_no']}');
-      print('email: ${request.fields['email']}');
-      print('country: ${request.fields['country']}');
-      print('state: ${request.fields['state']}');
-      print('city: ${request.fields['city']}');
-      print('address: ${request.fields['address']}');
-      print('remark: ${request.fields['remark']}');
-      print('truck_make: ${request.fields['truck_make']}');
-      print('make_other: ${request.fields['make_other']}');
-      print('vi_number: ${request.fields['vi_number']}');
 
       var response = await request.send();
       if (response.statusCode == 200) {

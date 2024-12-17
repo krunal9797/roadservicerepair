@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/modules/view_inquiry/view_inquiry_controller.dart';
+import 'package:roadservicerepair/app/utils/LabelValueRow.dart';
 import 'package:roadservicerepair/app/utils/text_utl.dart';
 
 class ViewInquiryView extends StatefulWidget {
@@ -57,6 +58,7 @@ class _ViewInquiryViewState extends State<ViewInquiryView> {
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
+
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('service :'),
@@ -70,193 +72,34 @@ class _ViewInquiryViewState extends State<ViewInquiryView> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('truck_make :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['truck_make']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Service For :',
+                            value: viewInquiry['service_for'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('make_other:'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['make_other']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Type :',
+                            value: viewInquiry['type'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('vi_number :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['vi_number']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Unit Number :',
+                            value: viewInquiry['unit_number'],
                           ),
-
-
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Truck Tire Type :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['truck_tire_type']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Driver Number :',
+                            value: viewInquiry['driver_number'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(' Tire Size :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['tire_size']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Address :',
+                            value: viewInquiry['address'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Towing_For :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['towing_for']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Remark :',
+                            value: viewInquiry['remark'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Email :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['email']))
-                              ],
-                            ),
+                          LabelValueRow(
+                            label: 'Creation :',
+                            value: viewInquiry['createdon'],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('mobile_no :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['mobile_no']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Address :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['address']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Country :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['country_name']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('State_Name :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['state_name']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('City_Name :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['city_name']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Remark :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['remark']))
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Created Date :'),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(child: Text(viewInquiry['createdon']))
-                              ],
-                            ),
-                          ),
-
-
-
                         ],
                       ),
 

@@ -64,26 +64,29 @@ class _ViewvendorInquiryState extends State<ViewvendorInquiry> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      _buildRow('Truck Tire Type:',
-                                          viewInquiry['truck_tire_type']),
-                                      _buildRow('Tire Size:',
-                                          viewInquiry['tire_size']),
-                                      _buildRow('Towing For:',
-                                          viewInquiry['towing_for']),
-                                      _buildRow('Truck Make:',
-                                          viewInquiry['truck_make']),
-                                      _buildRow('Make Other:',
-                                          viewInquiry['make_other']),
-                                      _buildRow('Vi Number:',
-                                          viewInquiry['vi_number']),
-                                      _buildRow('Country:',
-                                          viewInquiry['country_name']),
-                                      _buildRow('State Name:',
-                                          viewInquiry['state_name']),
-                                      _buildRow('City Name:',
-                                          viewInquiry['city_name']),
-                                      _buildRow(
-                                          'Remark:', viewInquiry['remark']),
+
+                                      _buildRow('Service For:',
+                                          viewInquiry['service_for']),
+                                      _buildRow('Type:',
+                                          viewInquiry['type']),
+
+                                      _buildRow('Name:',
+                                          viewInquiry['name']),
+
+                                      _buildRow('Unit Number:',
+                                          viewInquiry['unit_number']),
+
+                                      _buildRow('Driver Number:',
+                                          viewInquiry['driver_number']),
+
+                                      _buildRow('Address:',
+                                          viewInquiry['address']),
+
+                                      _buildRow('Remark:',
+                                          viewInquiry['remark']),
+
+                                      _buildRow('id:',
+                                          viewInquiry['id']),
                                     ],
                                   ),
                                   Positioned(
