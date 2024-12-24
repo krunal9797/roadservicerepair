@@ -39,140 +39,159 @@ class _EditInquiryviewState extends State<EditInquiryview> {
         body: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-
             const SizedBox(height: 15),
-            setTextField1(
+            // Text("kkk"),
+            setTextFieldDrop(
               context,
-              "Service.",
-              "Enter service",
+              "Service",
+              "Enter Service Name",
               controller.isService,
               controller.txtService,
               controller.fnService,
+              enable: false,
+              onTap: () {
+                _openServiceDialog(context, controller);
+              },
             ),
-
             const SizedBox(height: 15),
-            setTextField1(
-              context,
-              "Service For",
-              "Enter service For",
-              controller.isServiceFor,
-              controller.txtServiceFor,
-              controller.fnServiceFor,
-            ),
-
+            // Conditional Second Dropdown (Make or Model)
+            Obx(() {
+              if (controller.selectedService.value == 'Truck') {
+                return setTextFieldDrop(
+                  context,
+                  "Make Or Model",
+                  "Enter Service For",
+                  controller.isServiceFor,
+                  controller.txtServiceFor,
+                  controller.fnServiceFor,
+                  enable: false,
+                  onTap: () {
+                    if (controller.selectedService.isNotEmpty) {
+                      _openServiceDialogDepend(context, controller, controller.selectedService.value);
+                    } else {
+                      print('Please select a service first');
+                    }
+                  },
+                );
+              } else {
+                controller.selectedService.value = "";
+                return SizedBox.shrink(); // Hide the second dropdown if not 'Truck'
+              }
+            }),
             const SizedBox(height: 15),
-            setTextField1(
-              context,
-              "Type",
-              "Enter Type",
-              controller.isType,
-              controller.txtType,
-              controller.fnType,
-            ),
-
-            const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Name",
               "Enter Name",
               controller.isName,
               controller.txtName,
               controller.fnName,
+                enable: false
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Unit Number",
               "Enter Unit Number",
               controller.isUnitNumber,
               controller.txtUnitNumber,
               controller.fnUnitNumber,
+                enable: false
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Driver Number",
               "Enter Driver Number",
               controller.isDriverNumber,
               controller.txtDriverNumber,
               controller.fnDriverNumber,
+                enable: false
             ),
             const SizedBox(height: 15),
-            setTextFormField1(
+            setTextField(
               context,
               "Your Location",
               "Enter your address",
               controller.isAddress,
               controller.txtAddress,
               controller.fnAddress,
+                enable: false
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Remark",
               "Enter Remark",
               controller.isRemark,
               controller.txtRemark,
               controller.fnRemark,
+                enable: false
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Estimate Time",
               "Enter Estimate Time",
               controller.isEstTime,
               controller.txtEstTime,
               controller.fnEstTime,
+                enable: false
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Estimate Price",
               "Enter Price Time",
               controller.isEstPrice,
               controller.txtEstPrice,
               controller.fnEstPrice,
+                enable: false
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Name",
               "Enter Vendor Name",
               controller.isVendorName,
               controller.txtVendorName,
               controller.fnVendorName,
+                enable: false
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Email",
               "Enter Vendor Email",
               controller.isVendorEmail,
               controller.txtVendorEmail,
               controller.fnVendorEmail,
+                enable: false
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Mobile",
               "Enter Vendor Mobile",
               controller.isVendorMobile,
               controller.txtVendorMobile,
               controller.fnVendorMobile,
+                enable: false
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Address",
               "Enter Vendor Address",
               controller.isVendorAddress,
               controller.txtVendorAddress,
               controller.fnVendorAddress,
+                enable: false
             ),
 
 
@@ -205,7 +224,6 @@ class _EditInquiryviewState extends State<EditInquiryview> {
             //   style: TextStyle(fontSize: 18),
             // )),
 
-
             const SizedBox(height: 30),
 
             Center(
@@ -223,4 +241,64 @@ class _EditInquiryviewState extends State<EditInquiryview> {
       ),
     );
   }
+
+  // Dialog function to open when tapping the TextField
+  void _openServiceDialog(BuildContext context, EditInquiryController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,  // Set the background color to white
+          title: Text('Select Service'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: controller.services.map((service) {
+                return ListTile(
+                  title: Text(service),
+                  onTap: () {
+                    // Update the selected service in the controller and text field
+                    controller.selectedService.value = service;
+                    controller.txtService.text = service;
+                    Get.back(); // Close the dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _openServiceDialogDepend(BuildContext context, EditInquiryController controller, String selectedService) {
+    // Get the dependent details for the selected service
+    List<String> details = controller.serviceDetails[selectedService] ?? [];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Select Detail for $selectedService'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: details.map((detail) {
+                return ListTile(
+                  title: Text(detail),
+                  onTap: () {
+                    // Update the selected detail in the controller and text field
+                    controller.selectedServiceDetail.value = detail;
+                    controller.txtServiceFor.text = detail;
+                    Get.back(); // Close the second dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
 }

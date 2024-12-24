@@ -1,118 +1,137 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/modules/home/home_controller.dart';
-import 'package:roadservicerepair/app/modules/login/login_view.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-        init: HomeController(),
-        builder: (controller) {
-          return SafeArea(
+      init: HomeController(),
+      builder: (controller) {
+        return WillPopScope(
+          onWillPop: () async {
+            final exitConfirmed = await showDialog<bool>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Exit App'),
+                  content: const Text('Are you sure you want to exit the app?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text('Exit'),
+                    ),
+                  ],
+                );
+              },
+            );
+            return exitConfirmed ?? false;
+          },
+          child: SafeArea(
             child: Scaffold(
               backgroundColor: AppColors.primary,
-              body: Column(
+              body: Stack(
                 children: [
-                  // Top Carousel
-                  // Top image (changes every few seconds)
-                  SizedBox(
-                    height: 450, // Fixed height
-                    width: double.infinity, // Ensures the image fills horizontally
-                    child: Image.asset(
-                      'assets/images/abc.png',
-
+                  // Top Image
+                  Positioned(
+                    right: 0,
+                    left: 0,
+                    top: 0,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Image.asset(
+                        'assets/images/abcd.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  // Login Form
-                  SizedBox(height: 50,),
-                  Expanded(
-                    child: Padding(
+          
+                  // Main content
+          // Main content
+                  Positioned(
+                    right: 0,
+                    left: 0,
+                    bottom: 70,
+                    child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-
-
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               backgroundColor: Colors.red,
                             ),
                             onPressed: controller.onReqServiceTap,
-                            child: Text(
+                            child: const Text(
                               'Need Road Service',
-                              style:
-                              TextStyle(fontSize: 18, color: Colors.white),
+                              style: TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
-
-                          SizedBox(height: 15),
-
+                          const SizedBox(height: 15),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               backgroundColor: Colors.red,
                             ),
                             onPressed: controller.onRegisterTapCustomer,
-                            child: Text(
-                              'Become customer ',
-                              style:
-                              TextStyle(fontSize: 18, color: Colors.white),
+                            child: const Text(
+                              'Become customer',
+                              style: TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
-
-                          SizedBox(height: 10),
-
+                          const SizedBox(height: 10),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               backgroundColor: Colors.red,
                             ),
                             onPressed: controller.onRegisterTapVendor,
-                            child: Text(
+                            child: const Text(
                               'Become vendor',
-                              style:
-                              TextStyle(fontSize: 18, color: Colors.white),
+                              style: TextStyle(fontSize: 18, color: Colors.white),
                             ),
                           ),
-
-                          SizedBox(height: 10),
-
+                          const SizedBox(height: 10),
                           Center(
                             child: GestureDetector(
-                              onTap: controller.onAlreadyRegisteredTap, // Trigger the action
-                              child: Text(
+                              onTap: controller.onAlreadyRegisteredTap,
+                              child: const Text(
                                 'Already registered? Click to login',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.red, // Optional for emphasis
+                                  color: Colors.red,
                                 ),
                               ),
                             ),
                           ),
-
-
                         ],
                       ),
                     ),
                   ),
+          
                 ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

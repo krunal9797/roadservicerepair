@@ -38,10 +38,9 @@ class _SplashViewState extends State<SplashView> {
                       ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),
-                        child: setImageWithSize(AppImages.appLogo, 100, 100),
+                        child: setImageWithSize(AppImages.splashLogo, 100, 100),
                       ),
-                      const SizedBox(height: 20),
-                      setBoldText(AppInfo.appName, AppColors.titleText, 18)
+                      Image.asset("assets/images/"+AppImages.splashLogoRoad,height: 150,width: 250,),
                     ],
                   ),
                 ),

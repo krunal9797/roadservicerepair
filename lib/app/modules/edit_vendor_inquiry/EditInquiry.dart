@@ -34,34 +34,63 @@ class _EditinquiryState extends State<Editinquiry> {
           padding: const EdgeInsets.all(20),
           children: [
             const SizedBox(height: 15),
-            setTextField1(
+            // Text("Edit Inquiry vendor"),
+            setTextFieldDrop(
               context,
               "Service",
               "Enter Service Name",
               controller.isService,
               controller.txtService,
               controller.fnService,
+              enable: false,
+              onTap: () {
+                _openServiceDialog(context, controller);
+                controller.txtServiceFor.clear();
+              },
             ),
             const SizedBox(height: 15),
-            setTextField1(
-              context,
-              "Service For",
-              "Enter Service For",
-              controller.isServiceFor,
-              controller.txtServiceFor,
-              controller.fnServiceFor,
-            ),
+            // Conditional Second Dropdown (Make or Model)
+            Obx(() {
+              if (controller.selectedService.value == 'Truck') {
+                // Dropdown for 'Truck'
+                return setTextFieldDrop(
+                  context,
+                  "Make Or Model",
+                  "Enter Service For",
+                  controller.isServiceFor,
+                  controller.txtServiceFor,
+                  controller.fnServiceFor,
+                  enable: false,
+                  onTap: () {
+                    if (controller.selectedService.isNotEmpty) {
+                      _openServiceDialogDepend(context, controller, controller.selectedService.value);
+
+                    } else {
+                      print('Please select a service first');
+                    }
+                  },
+                );
+              } else if (controller.selectedService.value == 'Tires') {
+                // Textbox for 'Tires'
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: setTextField(
+                    context,
+                    "Enter Tire Size",
+                    "Enter Tire Size",
+                    controller.isServiceFor,
+                    controller.txtServiceFor,
+                    controller.fnServiceFor,
+                  ),
+                );
+              } else {
+                // Reset and hide the second input if no valid selection
+                controller.selectedService.value = "";
+                return SizedBox.shrink();
+              }
+            }),
             const SizedBox(height: 15),
-            setTextField1(
-              context,
-              "Type",
-              "Enter Type",
-              controller.isType,
-              controller.txtType,
-              controller.fnType,
-            ),
-            const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Name",
               "Enter Name",
@@ -70,7 +99,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnName,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Unit Number",
               "Enter Unit No",
@@ -79,7 +108,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnUnitNumber,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextFormField(
               context,
               "Address",
               "Enter Address",
@@ -88,7 +117,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnAddress,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Remark",
               "Enter Remark",
@@ -97,7 +126,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnRemark,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Estimate Time",
               "Enter Estimate Time",
@@ -106,7 +135,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnEstTime,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Estimate Price",
               "Enter Estimate Price",
@@ -115,7 +144,7 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnEstPrice,
             ),
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Name",
               "Enter Vendor Name",
@@ -125,7 +154,7 @@ class _EditinquiryState extends State<Editinquiry> {
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Email",
               "Enter Vendor Email Name",
@@ -135,7 +164,7 @@ class _EditinquiryState extends State<Editinquiry> {
             ),
 
             const SizedBox(height: 15),
-            setTextField1(
+            setTextField(
               context,
               "Vendor Mobile",
               "Enter Vendor Mobile",
@@ -144,13 +173,28 @@ class _EditinquiryState extends State<Editinquiry> {
               controller.fnVendorMobile,
             ),
             const SizedBox(height: 15),
-            setTextField1(
-              context,
-              "Vendor Address",
-              "Enter Vendor Address",
-              controller.isVendorAddress,
-              controller.txtVendorAddress,
-              controller.fnVendorAddress,
+            Stack(
+              children: [
+                // Address Input Field
+                setTextFormField(context, "Address", "Enter Vendor Address", controller.isVendorAddress,
+                    controller.txtVendorAddress, controller.fnVendorAddress),
+                // Location Icon Button
+                Positioned(
+                  right: 0, // Align to the right
+                  top: 0, // Align to the top of the field
+                  bottom: 0, // Align to the bottom of the field
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.fetchCurrentLocation(controller.txtVendorAddress);
+                    },
+                    child: Image.asset(
+                      'assets/images/progess.gif',
+                      width: 100, // Set the width of the GIF
+                      height: 100, // Set the height of the GIF
+                    ),
+                  ),
+                ),
+              ],
             ),
              const SizedBox(height: 20),
             Center(
@@ -168,4 +212,64 @@ class _EditinquiryState extends State<Editinquiry> {
       ),
     );
   }
+// Dialog function to open when tapping the TextField
+  void _openServiceDialog(BuildContext context, EditinquiryController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,  // Set the background color to white
+          title: Text('Select Service'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: controller.services.map((service) {
+                return ListTile(
+                  title: Text(service),
+                  onTap: () {
+                    // Update the selected service in the controller and text field
+                    controller.selectedService.value = service;
+                    controller.txtService.text = service;
+                    Get.back(); // Close the dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _openServiceDialogDepend(BuildContext context, EditinquiryController controller, String selectedService) {
+    // Get the dependent details for the selected service
+    List<String> details = controller.serviceDetails[selectedService] ?? [];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Select Detail for $selectedService'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: details.map((detail) {
+                return ListTile(
+                  title: Text(detail),
+                  onTap: () {
+                    // Update the selected detail in the controller and text field
+                    controller.selectedServiceDetail.value = detail;
+                    controller.txtServiceFor.text = detail;
+                    Get.back(); // Close the second dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 }

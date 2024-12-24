@@ -90,22 +90,21 @@ class _SideBarViewState extends State<SideBarView> {
                   children: [
                     const SizedBox(height: 20),
                     Center(
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        child: setImageWithSize(AppImages.appLogo, 100, 100),
-                      ),
-                    ),
+                      child: Image.asset(
+                        'assets/images/5555.png',
+                        width: 100, // Set the width
+                        height: 100, // Set the height
+                      ),),
 
                     const SizedBox(height: 20),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        setSemiText(AppInfo.appName, AppColors.titleText, 16)
-                      ],
-                    ),
-                    const SizedBox(height: 40),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     setSemiText(AppInfo.appName, AppColors.titleText, 16)
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 40),
                     //profile
                     Obx(
                       () => setSideBarButton("Profile", () {

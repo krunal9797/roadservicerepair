@@ -11,6 +11,7 @@ import 'package:roadservicerepair/model/StatusModel.dart';
 import '../../../model/CityData.dart';
 import '../../../model/StateData.dart';
 import '../../constants/Api.dart';
+import '../../utils/global.dart';
 
 class EditInquiryController extends GetxController {
   dynamic data = Get.arguments;
@@ -23,30 +24,43 @@ class EditInquiryController extends GetxController {
   String selectedStateId = "";
   String selectedCityId = "";
 
+
   String rname = "";
   var statuses = <Map<String, dynamic>>[].obs;
   var selectedStatus = ''.obs;
 
   Rx<File?> imagePath = Rx<File?>(null);
-
   RxBool isLoading = false.obs;
 
-  List<String> arrServices = [
-    "Truck Repair",
-    "Trailer Repair",
-    "Truck Tire",
-    "Trailer Tire",
-    "Towing"
+  final List<String> services = [
+    'Truck',
+    'Trailer',
+    'Tires',
+    'Towing',
+    'Fuel Delivery'
   ];
-  List<String> arrTypeOfTire = ["Steer", "Driver"];
-  List<String> arrTowingSrv = ["Truck", "Trailer", "Both"];
+  final Map<String, List<String>> serviceDetails = {
+    'Truck': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+  };
+
+  // Reactive variables for selected service and detail
+  RxString selectedService = "".obs;
+  RxString selectedServiceDetail = "".obs;
+
 
   List<StateInfo> arrState = [];
   List<StatusModel> arrStatus = [];
   List<CityInfo> arrCity = [];
 
   //Shake Key
-
 
 
   final isId = GlobalKey<ShakeWidgetState>();
@@ -104,7 +118,6 @@ class EditInquiryController extends GetxController {
   FocusNode fnVendorAddress = FocusNode();
 
 
-
   //RxBool isLoading = false.obs;
   RxInt status = 0.obs;
   RxString imageurl = ''.obs;
@@ -114,18 +127,16 @@ class EditInquiryController extends GetxController {
   var isLoadingState = false.obs;
   var isLoadingCity = false.obs;
 
-  //Operations
-  RxString selectedService = ''.obs;
 
   InfoList() {
-    status.value = int.parse(data['sta_tus']);
+//    status.value = int.parse(data['sta_tus']);
     imageurl.value = data['image'];
 
     print(status.toString() + imageurl.toString());
 
+    txtId.text = data['id'];
     txtService.text = data['service'];
     txtServiceFor.text = data['service_for'];
-    txtType.text = data['type'];
     txtName.text = data['name'];
     txtUnitNumber.text = data['unit_number'];
     txtDriverNumber.text = data['driver_number'];
@@ -140,6 +151,7 @@ class EditInquiryController extends GetxController {
 
     rname = data['rname'];
     selectedStatus.value = rname;
+    selectedService.value = txtService.text;
   }
 
   @override
@@ -164,7 +176,7 @@ class EditInquiryController extends GetxController {
       if (statuses.isNotEmpty) {
         selectedStatus.value = statuses.firstWhere(
                 (status) => status['name'] == rname,
-                orElse: () => {'name': ''})['name'] ??
+            orElse: () => {'name': ''})['name'] ??
             '';
       }
     } else {
@@ -176,12 +188,10 @@ class EditInquiryController extends GetxController {
     selectedStatus.value = value;
   }
 
-  String? get selectedId => statuses.firstWhereOrNull(
-      (status) => status['name'] == selectedStatus.value)?['id'];
+  String? get selectedId =>
+      statuses.firstWhereOrNull(
+              (status) => status['name'] == selectedStatus.value)?['id'];
 
-  onServiceSelect(String? value) {
-    selectedService.value = value ?? '';
-  }
 
   showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
@@ -191,8 +201,14 @@ class EditInquiryController extends GetxController {
           return Padding(
             padding: const EdgeInsets.all(18.0),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4.5,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height / 4.5,
               child: Row(
                 children: [
                   Expanded(
@@ -241,7 +257,7 @@ class EditInquiryController extends GetxController {
 
   Future _pickImageFromGallery(BuildContext context) async {
     final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
 
     final File pickedFile = File(returnImage.path);
@@ -257,7 +273,7 @@ class EditInquiryController extends GetxController {
 
   Future _pickImageFromCamera(BuildContext context) async {
     final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnImage == null) return;
     final File pickedFile = File(returnImage.path);
 
@@ -298,6 +314,7 @@ class EditInquiryController extends GetxController {
   // }
 
   Future<void> sendNow(BuildContext context) async {
+
     try {
       final response = await http.post(
         Uri.parse(Api.UPDATE_VENDOR_INQUIRY),
@@ -320,14 +337,16 @@ class EditInquiryController extends GetxController {
           'vendor_email': data['vendor_email'].toString(),
           'vendor_mobile': data['vendor_mobile'].toString(),
           'vendor_address': data['vendor_address'].toString(),
-          'status': data['status'].toString(),
+          'status': selectedId, // Default value for invalid status
+
           'image': data['image']
         }),
       );
 
-      if (response.statusCode == 200) {
-        Navigator.pop(context);
 
+      if (response.statusCode == 200) {
+        IsRefresh = true;
+        Navigator.pop(context,true);
         print(response.body);
         Get.snackbar("Success", "Update Details successfully",
             snackPosition: SnackPosition.BOTTOM);

@@ -64,6 +64,8 @@ class _ProfileViewState extends State<ProfileView> {
   int _totalNotifications = 0;
   late PushNotification pushNotification;
 
+
+
   void registerNotification() async {
     await Firebase.initializeApp();
     _messaging = FirebaseMessaging.instance;
@@ -180,6 +182,21 @@ class _ProfileViewState extends State<ProfileView> {
           image = data['image'];
           user_type = data['user_type'];
 
+          print("vendor");
+          print(user_type == "2" ? true : false);
+          print("customer");
+          print(user_type == "1" ? true : false);
+          print("dmin");
+          print(user_type == "0" ? true : false);
+
+          print("________________________________");
+          print("vendor");
+          print(user_type == 2 ? true : false);
+          print("customer");
+          print(user_type == 1 ? true : false);
+          print("dmin");
+          print(user_type == 0 ? true : false);
+
           // SharedPreferences prefs = await SharedPreferences.getInstance();
           //   prefs.setString('email', jsonResponse['info']['email'].toString());
           // print(jsonResponse['info']['email'].toString());
@@ -212,6 +229,7 @@ class _ProfileViewState extends State<ProfileView> {
             backgroundColor: Colors.transparent,
           ),
         ),
+        // Text("type "+user_type),
         const SizedBox(height: 20),
         DataWidget(
           label: "Type",
@@ -229,6 +247,12 @@ class _ProfileViewState extends State<ProfileView> {
           labelFontSize: 14,
           phoneNumberFontSize: 16,
         ),
+
+        //2 hoi to batavanu
+        //service type
+
+        //1 true than show false than hide
+
         DataWidget(
           label: "Working Hours",
           phoneNumber: working_hours,
@@ -236,7 +260,9 @@ class _ProfileViewState extends State<ProfileView> {
           phoneNumberColor: AppColors.titleText,
           labelFontSize: 14,
           phoneNumberFontSize: 16,
+          visible: user_type=="2"?true:false, // Equivalent to `visible: user_type == 2`
         ),
+
         DataWidget(
           label: "Company Name",
           phoneNumber: company_name,
@@ -262,6 +288,7 @@ class _ProfileViewState extends State<ProfileView> {
           phoneNumberColor: AppColors.titleText,
           labelFontSize: 14,
           phoneNumberFontSize: 16,
+          visible: user_type=="1"?true:false, // Equivalent to `visible: user_type == 2`
         ),
 
         DataWidget(
@@ -271,7 +298,9 @@ class _ProfileViewState extends State<ProfileView> {
           phoneNumberColor: AppColors.titleText,
           labelFontSize: 14,
           phoneNumberFontSize: 16,
+          visible: user_type == "2" ? true : false,
         ),
+
 
         DataWidget(
           label: "Mobile No",

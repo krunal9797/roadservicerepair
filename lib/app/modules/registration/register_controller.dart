@@ -36,14 +36,16 @@ class RegisterController extends GetxController {
   final isAdd = GlobalKey<ShakeWidgetState>();
   final isEmail = GlobalKey<ShakeWidgetState>();
   final isPassword = GlobalKey<ShakeWidgetState>();
-
+  final isService = GlobalKey<ShakeWidgetState>();
   //Controller
 
+  TextEditingController txtService = TextEditingController();
   TextEditingController txtCompanyName = TextEditingController();
   TextEditingController txtPhone = TextEditingController();
   TextEditingController txtAdd = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
+  TextEditingController txtVendorFor = TextEditingController();
 
   TextEditingController txtWorkingHours = TextEditingController();
   TextEditingController txtAuthorization = TextEditingController();
@@ -58,6 +60,7 @@ class RegisterController extends GetxController {
   FocusNode fnWorkingHour = FocusNode();
   FocusNode fnAuthorization = FocusNode();
   FocusNode fnContactPerson = FocusNode();
+  FocusNode fnService = FocusNode();
 
   RxBool isSecure = false.obs;
 

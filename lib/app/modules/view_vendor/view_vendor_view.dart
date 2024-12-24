@@ -143,7 +143,7 @@ class _VendorsViewState extends State<VendorsView> {
                                 color: Colors.red,
                               ),
                               onPressed: () {
-                                _.deleteItem(customer['id']);
+                                _.deleteItem(customer['u_id']);
                               },
                             ),
                           ),

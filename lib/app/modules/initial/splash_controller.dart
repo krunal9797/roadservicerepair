@@ -7,8 +7,6 @@ import '../side_bar/side_bar_view.dart';
 
 class SplashController extends GetxController {
 
-
-
   Future<bool> isLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool("isLogin") ?? false; // Return false if the key doesn't exist

@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:roadservicerepair/app/utils/shake_widget.dart';
 
@@ -29,27 +31,23 @@ class ReqServiceController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  List<String> arrServices = [
-    "Truck Repair",
-    "Trailer Repair",
-    "Truck Tire",
-    "Trailer Tire",
-    "Towing"
-  ];
-  List<String> arrTypeOfTire = ["Steer", "Driver"];
-  List<String> arrTowingSrv = ["Truck", "Trailer", "Both"];
-  List<String> arrTruckMake = [
-    "Freightliner ",
-    "Volvo",
-    "Kenworth",
-    "Peterbilt",
-    "International",
-    "Other"
-  ];
+  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery'];
 
-  List<Info> arrCountry = [];
-  List<StateInfo> arrState = [];
-  List<CityInfo> arrCity = [];
+  final Map<String, List<String>> serviceDetails = {
+    'Truck': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+  };
+
+  // Reactive variables for selected service and detail
+  RxString selectedService = "".obs;
+  RxString selectedServiceDetail = "".obs;
 
   //Shake Key0
   final isService = GlobalKey<ShakeWidgetState>();
@@ -82,10 +80,6 @@ class ReqServiceController extends GetxController {
   FocusNode fnRemark = FocusNode();
   FocusNode fnImage = FocusNode();
 
-  //Operations
-  RxString selectedService = ''.obs;
-  RxString selectedTruck = ''.obs;
-
   @override
   void onInit() {
     pageTitle.value = data;
@@ -94,18 +88,6 @@ class ReqServiceController extends GetxController {
     super.onInit();
   }
 
-  onServiceSelect(String? value) {
-    print("service" + value!);
-    selectedService.value = value ?? '';
-    if (value != "Truck Repair") {
-      selectedTruck.value = '';
-    }
-  }
-
-  onTruckSelect(String? value) {
-    print("service" + value!);
-    selectedTruck.value = value ?? '';
-  }
 
   showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
@@ -319,14 +301,17 @@ class ReqServiceController extends GetxController {
       var request = http.MultipartRequest('POST', uri);
       request.fields['service'] = selectedService.value;
       request.fields['service_for'] = txtServiceFor.text;
-      request.fields['type'] = txtType.text;
+      // request.fields['type'] = txtType.text;
       request.fields['name'] = txtName.text;
       request.fields['unit_number'] = txtUnitNo.text;
       request.fields['driver_number'] = txtDriverNo.text;
       request.fields['address'] = txtAddress.text;
       request.fields['remark'] = txtRemark.text;
 
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath.value!.path));
+      final defaultImageFile = await getDefaultImageFile();
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath.value?.path ?? defaultImageFile.path));
+
+
       // if (imagePath != null && imagePath.value!.path.isNotEmpty) {
       //   request.files.add(await http.MultipartFile.fromPath('image', imagePath.value!.path));
       // }
@@ -362,6 +347,22 @@ class ReqServiceController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<File> getDefaultImageFile() async {
+    // Load the asset as a byte array
+    final byteData = await rootBundle.load('assets/images/road_repair_service_1.png');
+
+    // Get a temporary directory
+    final tempDir = await getTemporaryDirectory();
+
+    // Create a temporary file for the asset
+    final tempFile = File('${tempDir.path}/road.png');
+
+    // Write the asset data to the temporary file
+    await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+
+    return tempFile;
   }
 
   Future<bool> requestLocationPermission() async {
@@ -443,4 +444,5 @@ class ReqServiceController extends GetxController {
       Get.back();
     }
   }
+
 }

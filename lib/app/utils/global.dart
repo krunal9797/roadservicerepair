@@ -21,3 +21,5 @@ bool validateEmail(String email) {
   RegExp regExp = RegExp(emailPattern);
   return regExp.hasMatch(email);
 }
+
+bool IsRefresh = false;

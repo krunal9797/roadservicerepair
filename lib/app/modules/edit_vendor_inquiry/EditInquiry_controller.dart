@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../model/CityData.dart';
@@ -30,15 +34,24 @@ class EditinquiryController extends GetxController{
   RxInt status = 0.obs;
   RxString imageurl = ''.obs;
 
-  List<String> arrServices = [
-    "Truck Repair",
-    "Trailer Repair",
-    "Truck Tire",
-    "Trailer Tire",
-    "Towing"
-  ];
-  List<String> arrTypeOfTire = ["Steer", "Driver"];
-  List<String> arrTowingSrv = ["Truck", "Trailer", "Both"];
+
+  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery'];
+  final Map<String, List<String>> serviceDetails = {
+    'Truck': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+  };
+
+  // Reactive variables for selected service and detail
+  RxString selectedService = "".obs;
+  RxString selectedServiceDetail = "".obs;
+
 
   List<Info> arrCountry = [];
   List<StateInfo> arrState = [];
@@ -103,10 +116,6 @@ class EditinquiryController extends GetxController{
 
 
 
-  //Operations
-  RxString selectedService = ''.obs;
-
-
   InfoList(){
      print(data);
 
@@ -117,12 +126,14 @@ class EditinquiryController extends GetxController{
 
      txtService.text = data['service'];
      txtServiceFor.text = data['service_for'];
-     txtType.text = data['type'];
      txtName.text = data['name'];
      txtUnitNumber.text = data['unit_number'];
      txtDriverNumber.text = data['driver_number'];
      txtAddress.text = data['address'];
-     // txtRemark.text = data['remark'];
+
+     selectedService.value = txtService.text;
+
+     txtRemark.text = data['remark'];
      // txtEstTime.text = data['est_time'];
      // txtEstPrice.text = data['est_price'];
      // txtVendorName.text = data['vendor_name'];
@@ -135,11 +146,12 @@ class EditinquiryController extends GetxController{
   }
   getList() async {
     prefs = await SharedPreferences.getInstance();
-    //txtEmail.text =prefs.getString("email")!;
-    //txtAdrs.text =prefs.getString("address")!;
+    txtVendorEmail.text =prefs.getString("email")!;
+    txtVendorAddress.text =prefs.getString("address")!;
 
-    //txtMobile.text=prefs.getString("mobile_no")!;
-    txtName.text=prefs.getString("name")!;
+    txtVendorMobile.text=prefs.getString("mobile_no")!;
+    txtVendorName.text=prefs.getString("contact_person")!;
+
 
 
   }
@@ -151,52 +163,27 @@ class EditinquiryController extends GetxController{
     InfoList();
     getList();
 
-
-
-
-
-
     super.onInit();
   }
 
 
-  onServiceSelect(String? value) {
-    selectedService.value = value ?? '';
-
-  }
-
-  // bool validateInputs() {
-  //   bool isValid = true;
-  //
-  //   if (selectedService.value.isEmpty) {
-  //     isServices.currentState?.shake();
-  //     isValid = false;
-  //   }
-  //
-  //   if (txtMobile.text.isEmpty) {
-  //     isMobile.currentState?.shake();
-  //     isValid = false;
-  //   }
-  //   if (txtEmail.text.isEmpty) {
-  //     isEmail.currentState?.shake();
-  //     isValid = false;
-  //   }
-  //
-  //   if (txtAdrs.text.isEmpty) {
-  //     isAdrs.currentState?.shake();
-  //     isValid = false;
-  //   }
-  //
-  //   if (txtReqInfo.text.isEmpty) {
-  //     isReqInfo.currentState?.shake();
-  //     isValid = false;
-  //   }
-  //
-  //   return isValid;
-  // }
-
   Future<void> sendNow(BuildContext context) async {
 
+    print("id "+data['id'].toString());
+    print("service "+data['service'].toString());
+    print("service_for "+data['service_for'].toString());
+    print("name "+data['name'].toString());
+    print("unit_number "+data['unit_number'].toString());
+    print("driver_number "+data['driver_number'].toString());
+    print("address "+data['address'].toString());
+    print("remark "+txtRemark.text.toString());
+    print("est_time "+txtEstTime.text.toString());
+    print("est_price "+txtEstPrice.text.toString());
+    print("vendor_name "+txtVendorName.text.toString());
+    print("vendor_email "+txtVendorEmail.text.toString());
+    print("vendor_address "+txtVendorAddress.text.toString());
+    print("status "+status.toString());
+    print("sta_tus "+data['sta_tus'].toString());
 
     try {
       final response = await http.post(
@@ -204,35 +191,33 @@ class EditinquiryController extends GetxController{
         headers: {
           'Content-Type': 'application/json',
         },
+
+
+
         body: jsonEncode({
           'id': data['id'].toString(),
-          'service': data['service'].toString(),
-          'service_for': data['service_for'].toString(),
-          'type': data['type'].toString(),
-          'name': data['name'].toString(),
-          'unit_number': data['unit_number'].toString(),
-          'driver_number': data['driver_number'].toString(),
-          'address': data['address'].toString(),
-          'remark': data['remark'].toString(),
-          'est_time': data['est_time'].toString(),
-          'est_price': data['est_price'].toString(),
-          'vendor_name': data['vendor_name'].toString(),
-          'vendor_email': data['vendor_email'].toString(),
-          'vendor_mobile': data['vendor_mobile'].toString(),
-          'vendor_address': data['vendor_address'].toString(),
+          'service': txtService.text.toString(),
+          'service_for': txtServiceFor.text.toString(),
+          'name': txtName.text.toString(),
+          'unit_number': txtUnitNumber.text.toString(),
+          'driver_number': txtDriverNumber.text.toString(),
+          'address': txtAddress.text.toString(),
+          'remark': txtRemark.text.toString(),
+          'est_time': txtEstTime.text.toString(),
+          'est_price': txtEstPrice.text.toString(),
+          'vendor_name': txtVendorName.text.toString(),
+          'vendor_email': txtVendorEmail.text.toString(),
+          'vendor_mobile': txtVendorMobile.text.toString(),
+          'vendor_address': txtVendorAddress.text.toString(),
           'status': "2",
           'sta_tus':"1",
-
         }),
       );
-
-
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         if (jsonResponse['status'] != null && jsonResponse['status'] == 1){
-
-               print(jsonResponse);
+          print(jsonResponse);
         Get.back(result: true);
 
         Get.snackbar("Success", jsonResponse["msg"],
@@ -256,33 +241,88 @@ class EditinquiryController extends GetxController{
       isLoading.value = false;
     }
 
-    // print({
-    //   'service': data['service'].toString(),
-    //   'tire_type': data['truck_tire_type'].toString() ,
-    //   'tire_size':data['tire_size'].toString()  ,
-    //   'towing_for':data['towing_for'].toString()  ,
-    //   'cust_mobileno': data['mobile_no'].toString() ,
-    //   'email': data['email'].toString() ,
-    //   'country': data['cid'].toString() ,
-    //   'state': data['sid'].toString() ,
-    //   'city':data['c_id'].toString()  ,
-    //   'address': prefs.getString("address") ,
-    //   'remark': data['remark'].toString() ,
-    //   'cust_address': data['address'].toString(),
-    //   'est_time': txtest_time.text.toString(),
-    //   'est_price': txtest_price.text.toString(),
-    //   'vendor_name': prefs.getString("name"),
-    //   'vendor_email': prefs.getString("email"),
-    //   'vendor_mobile': prefs.getString("mobile_no"),
-    //   'status': "2",
-    //   'est_time': txtest_time.text.toString(),
-    //   'est_price': txtest_price.text.toString(),
-    //   'id': data['id'].toString(),
-    //   'sta_tus':"1",
-    // 'truck_make':data['truck_make'].toString()  ,
-    // 'make_other':data['make_other'].toString(),
-    // 'vi_number': data['vi_number'].toString() ,
-    // });
+
+  }
+
+
+  Future<bool> requestLocationPermission() async {
+    // Request location permission using permission_handler
+    PermissionStatus status = await Permission.location.request();
+
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      // The permission was denied
+      return false;
+    } else if (status.isPermanentlyDenied) {
+      // If the permission is permanently denied, open settings
+      openAppSettings();
+      return false;
+    }
+    return false;
+  }
+
+  Future<void> fetchCurrentLocation(TextEditingController controller) async {
+    // Check if location services are enabled
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Show dialog to enable location services
+      Get.defaultDialog(
+        title: "Location Disabled",
+        middleText: "Please enable location services to continue.",
+        textConfirm: "Enable",
+        onConfirm: () async {
+          Get.back(); // Close the dialog
+          await Geolocator.openLocationSettings();
+        },
+        textCancel: "Cancel",
+      );
+      return;
+    }
+
+    // Check and request location permissions
+    bool permissionGranted = await requestLocationPermission();
+    if (!permissionGranted) {
+      // If location permission is not granted
+      Get.snackbar(
+        "Permission Denied",
+        "Location permissions are required to fetch your current location.",
+      );
+      return;
+    }
+
+    // Show progress dialog while fetching location
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    try {
+      // Fetch the current position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Fetch the address from the latitude and longitude
+      List<Placemark>? placemarks = await GeocodingPlatform.instance
+          ?.placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks != null && placemarks.isNotEmpty) {
+        // Process the address
+        Placemark place = placemarks.first;
+        String address = "${place.name}, ${place.street}, ${place.locality}, "
+            "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+        controller.text =
+            address; // Update the text field with the full address
+      } else {
+        Get.snackbar("Error", "No address found for this location.");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Failed to fetch location: $e");
+    } finally {
+      // Close the progress dialog after fetching the location
+      Get.back();
+    }
   }
 
 

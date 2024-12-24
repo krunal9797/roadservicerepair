@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:roadservicerepair/app/constants/util.dart';
+import 'package:roadservicerepair/app/modules/home/home_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants/Api.dart';
 import '../../utils/shake_widget.dart';
@@ -108,6 +109,7 @@ class LoginController extends GetxController {
            prefs.setString('address', jsonResponse['info']['address'].toString());
            prefs.setString('image', jsonResponse['info']['image'].toString());
            prefs.setString('user_type', jsonResponse['info']['user_type'].toString());
+           prefs.setString('contact_person', jsonResponse['info']['contact_person'].toString());
 
            prefs.setString('c_id', jsonResponse['info']['c_id'].toString());
 
@@ -144,5 +146,9 @@ class LoginController extends GetxController {
 
   onReqServiceTap() {
     Get.to(() => const ReqServiceView(), arguments: "Request Road Service");
+  }
+
+  void onBackToHome() {
+    Get.off(() => const HomeView());
   }
 }

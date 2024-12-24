@@ -39,32 +39,60 @@ class _ReqServiceViewState extends State<ReqServiceView> {
         body: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            setTextField(
+            setTextFieldDrop(
               context,
               "Service",
               "Enter Service Name",
               controller.isService,
               controller.txtService,
               controller.fnService,
+              enable: false,
+              onTap: () {
+                _openServiceDialog(context, controller);
+                controller.txtServiceFor.clear();
+              },
             ),
             const SizedBox(height: 15),
-            setTextField(
-              context,
-              "Service For",
-              "Enter Service For ",
-              controller.isServiceFor,
-              controller.txtServiceFor,
-              controller.fnServiceFor,
-            ),
-            const SizedBox(height: 15),
-            setTextField(
-              context,
-              "Type",
-              "Enter Type",
-              controller.isType,
-              controller.txtType,
-              controller.fnType,
-            ),
+            // Conditional Second Dropdown (Make or Model)
+            Obx(() {
+              if (controller.selectedService.value == 'Truck') {
+                // Dropdown for 'Truck'
+                return setTextFieldDrop(
+                  context,
+                  "Make Or Model",
+                  "Enter Service For",
+                  controller.isServiceFor,
+                  controller.txtServiceFor,
+                  controller.fnServiceFor,
+                  enable: false,
+                  onTap: () {
+                    if (controller.selectedService.isNotEmpty) {
+                      _openServiceDialogDepend(context, controller, controller.selectedService.value);
+
+                    } else {
+                      print('Please select a service first');
+                    }
+                  },
+                );
+              } else if (controller.selectedService.value == 'Tires') {
+                // Textbox for 'Tires'
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: setTextField(
+                    context,
+                    "Enter Tire Size",
+                    "Enter Tire Size",
+                    controller.isServiceFor,
+                    controller.txtServiceFor,
+                    controller.fnServiceFor,
+                  ),
+                );
+              } else {
+                // Reset and hide the second input if no valid selection
+                controller.selectedService.value = "";
+                return SizedBox.shrink();
+              }
+            }),
             const SizedBox(height: 15),
             setTextField(
               context,
@@ -106,22 +134,22 @@ class _ReqServiceViewState extends State<ReqServiceView> {
             Stack(
               children: [
                 // Address Input Field
-                setTextFormField(context, "Address", "Enter address", controller.isAddress,
+                setTextFormField(context, "Address / Share Live Location", "Enter Adress/ share live location", controller.isAddress,
                     controller.txtAddress, controller.fnAddress),
                 // Location Icon Button
                 Positioned(
-                  right: 20, // Align to the right
+                  right: 0, // Align to the right
                   top: 0, // Align to the top of the field
                   bottom: 0, // Align to the bottom of the field
-                  child:IconButton(
-                    icon: const Icon(
-                      Icons.location_on,
-                      color: Colors.red,
-                      size: 30, // Set the size of the icon here
-                    ),
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       controller.fetchCurrentLocation(controller.txtAddress);
                     },
+                    child: Image.asset(
+                      'assets/images/progess.gif',
+                      width: 100, // Set the width of the GIF
+                      height: 100, // Set the height of the GIF
+                    ),
                   ),
                 ),
               ],
@@ -168,6 +196,63 @@ class _ReqServiceViewState extends State<ReqServiceView> {
           ],
         ),
       ),
+    );
+  }
+
+  void _openServiceDialog(BuildContext context, ReqServiceController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,  // Set the background color to white
+          title: Text('Select Service'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: controller.services.map((service) {
+                return ListTile(
+                  title: Text(service),
+                  onTap: () {
+                    // Update the selected service in the controller and text field
+                    controller.selectedService.value = service;
+                    controller.txtService.text = service;
+                    Get.back(); // Close the dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _openServiceDialogDepend(BuildContext context, ReqServiceController controller, String selectedService) {
+    // Get the dependent details for the selected service
+    List<String> details = controller.serviceDetails[selectedService] ?? [];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Select Detail for $selectedService'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: details.map((detail) {
+                return ListTile(
+                  title: Text(detail),
+                  onTap: () {
+                    // Update the selected detail in the controller and text field
+                    controller.selectedServiceDetail.value = detail;
+                    controller.txtServiceFor.text = detail;
+                    Get.back(); // Close the second dialog
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

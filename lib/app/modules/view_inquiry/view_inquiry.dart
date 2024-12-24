@@ -76,10 +76,7 @@ class _ViewInquiryViewState extends State<ViewInquiryView> {
                             label: 'Service For :',
                             value: viewInquiry['service_for'],
                           ),
-                          LabelValueRow(
-                            label: 'Type :',
-                            value: viewInquiry['type'],
-                          ),
+                         
                           LabelValueRow(
                             label: 'Unit Number :',
                             value: viewInquiry['unit_number'],

@@ -8,6 +8,7 @@ class DataWidget extends StatelessWidget {
   final Color phoneNumberColor;
   final double labelFontSize;
   final double phoneNumberFontSize;
+  final bool visible; // New parameter to control visibility
 
   const DataWidget({
     Key? key,
@@ -17,10 +18,15 @@ class DataWidget extends StatelessWidget {
     this.phoneNumberColor = Colors.black,
     this.labelFontSize = 14.0,
     this.phoneNumberFontSize = 16.0,
+    this.visible = true, // Default to true to show the widget
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (!visible) {
+      return const SizedBox.shrink(); // Return an empty widget if not visible
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

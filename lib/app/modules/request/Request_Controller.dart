@@ -374,7 +374,11 @@ class RequestController extends GetxController {
       request.fields['address'] = txtAddress.text;
       request.fields['remark'] = txtRemark.text;
 
-      request.files.add(await http.MultipartFile.fromPath('image', imagePath.value!.path));
+      final defaultImageFile = await getDefaultImageFile();
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath?.value?.path ?? defaultImageFile.path));
+
+//      request.files.add(await http.MultipartFile.fromPath('image', imagePath.value?.path ?? ''));
+
 
 
       var response = await request.send();
@@ -394,5 +398,21 @@ class RequestController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<File> getDefaultImageFile() async {
+    // Load the asset as a byte array
+    final byteData = await rootBundle.load('assets/images/road_repair_service_1.png');
+
+    // Get a temporary directory
+    final tempDir = await getTemporaryDirectory();
+
+    // Create a temporary file for the asset
+    final tempFile = File('${tempDir.path}/road.png');
+
+    // Write the asset data to the temporary file
+    await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+
+    return tempFile;
   }
 }

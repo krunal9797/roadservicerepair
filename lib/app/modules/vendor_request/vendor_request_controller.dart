@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../constants/Api.dart';
+import '../../utils/global.dart';
 import '../edit_inquiry/Edit_inquiryView.dart';
 
 class VendorReqController extends GetxController {
@@ -11,8 +13,10 @@ class VendorReqController extends GetxController {
 
   void onInit() {
     super.onInit();
-    print("VendorReqController");
+    print("kkcs "+IsRefresh.toString());
+
     fetchShowVendorRequest();
+
   }
 
   Future<void> fetchShowVendorRequest() async {
@@ -121,4 +125,5 @@ class VendorReqController extends GetxController {
 
 
   }
+
 }

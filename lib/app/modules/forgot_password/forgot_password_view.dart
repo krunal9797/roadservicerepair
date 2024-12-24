@@ -31,40 +31,37 @@ class _ForgotViewState extends State<ForgotView> {
 
 
   submit() async {
-    final email = txtEmail.text.trim();
-
-
+    final email = txtEmail.text.toString().trim();
+    // pankilpatel.cmpicamcal15@gmail.com
+    print(""+email);
     if (email.isEmpty ) {
       Get.snackbar("Error", "Please enter email");
       return;
     }
 
-    try {
-      final response = await http.post(
-        Uri.parse(Api.FORGETPASSWORD),
-        body: {
-          'email': email,
 
-        },
-      );
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST',  Uri.parse(Api.FORGETPASSWORD));
+    request.body = json.encode({
+      "email": ""+email
+    });
+    request.headers.addAll(headers);
 
+    http.StreamedResponse response = await request.send();
 
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        print(jsonResponse);
-        handleResponse(jsonResponse);
+    if (response.statusCode == 200) {
+      String responseBody = await response.stream.bytesToString();
+      Map<String, dynamic> parsedResponse = json.decode(responseBody);
+      // Handle the parsed response
+      handleResponse(parsedResponse);
 
-
-        // Parse the response and navigate to the next screen
-
-      } else {
-        // Handle error response
-        Get.snackbar("Error", "failed");
-      }
-    } catch (e) {
-      print(e);
-      Get.snackbar("Error", "An error occurred");
     }
+    else {
+      print(response.reasonPhrase);
+    }
+
   }
   void handleResponse(Map<String, dynamic> response) {
     if (response['status'] == 1) {
