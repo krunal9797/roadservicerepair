@@ -34,7 +34,7 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
                 size: 50,
                 color: AppColors.detailText,
               ),
-              setRegularText("No customers found.", AppColors.titleText, 14)
+              setRegularText("No customers found. test", AppColors.titleText, 14)
             ],
           ),
         )
@@ -66,7 +66,7 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildRow('Service For :', customer['service_for']),
-                          _buildRow('Type :', customer['type']),
+                          // _buildRow('Type :', customer['type']),
                           _buildRow('Name :', customer['name']),
                           _buildRow('Unit Number :', customer['unit_number']),
                           _buildRow('Driver Number :', customer['driver_number']),

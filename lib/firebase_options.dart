@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '612114844525',
     projectId: 'road-repair-service',
     storageBucket: 'road-repair-service.appspot.com',
-    iosBundleId: 'com.example.roadservicerepair',
+    iosBundleId: 'com.roadservicerepair.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '612114844525',
     projectId: 'road-repair-service',
     storageBucket: 'road-repair-service.appspot.com',
-    iosBundleId: 'com.example.roadservicerepair',
+    iosBundleId: 'com.roadservicerepair.app',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

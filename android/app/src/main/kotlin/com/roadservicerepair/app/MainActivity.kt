@@ -1,4 +1,4 @@
-package com.example.roadservicerepair
+package com.roadservicerepair.app
 
 import io.flutter.embedding.android.FlutterActivity
 
