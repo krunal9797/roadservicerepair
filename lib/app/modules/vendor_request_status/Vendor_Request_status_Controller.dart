@@ -35,10 +35,14 @@ class VendorRequestStatusController extends GetxController{
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(data);
-        List<dynamic> list = data['info'];
-        print(list);
-        arr.assignAll(list);
+        if (data['status'] == 1) {
+          final info = data['info'];
+          if (info is Map) {
+            arr.assignAll([info]); // Wrap in a list if it's a single object
+          } else if (info is List) {
+            arr.assignAll(info); // Directly assign if it's already a list
+          }
+        }
       } else {
       //  Get.snackbar('Error', 'Failed to load customers');
       }

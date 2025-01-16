@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
+import 'package:roadservicerepair/app/modules/login/login_view.dart';
 import 'package:roadservicerepair/app/utils/DataWidget.dart';
 import 'package:roadservicerepair/app/utils/button_utl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -218,180 +221,207 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: [
-        const SizedBox(height: 20),
-        Center(
-          child: CircleAvatar(
-            radius: 80.0,
-            backgroundImage: NetworkImage(image),
-            backgroundColor: Colors.transparent,
+    return WillPopScope(
+      onWillPop: () async {
+        final exitConfirmed = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Are you sure you want to exit the app?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // You can use either SystemNavigator.pop() or exit(0)
+                   exit(0);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Exit'),
+                ),
+              ],
+            );
+          },
+        );
+        return exitConfirmed ?? false;
+      },
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        children: [
+          const SizedBox(height: 20),
+          Center(
+            child: CircleAvatar(
+              radius: 80.0,
+              backgroundImage: NetworkImage(image),
+              backgroundColor: Colors.transparent,
+            ),
           ),
-        ),
-        // Text("type "+user_type),
-        const SizedBox(height: 20),
-        DataWidget(
-          label: "Type",
-          phoneNumber: type,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-        DataWidget(
-          label: "Customer Type",
-          phoneNumber: cust_type,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
+          // Text("type "+user_type),
+          const SizedBox(height: 20),
+          DataWidget(
+            label: "Type",
+            phoneNumber: type,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+          DataWidget(
+            label: "Customer Type",
+            phoneNumber: cust_type,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
 
-        //2 hoi to batavanu
-        //service type
+          //2 hoi to batavanu
+          //service type
 
-        //1 true than show false than hide
+          //1 true than show false than hide
 
-        DataWidget(
-          label: "Working Hours",
-          phoneNumber: working_hours,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-          visible: user_type=="2"?true:false, // Equivalent to `visible: user_type == 2`
-        ),
+          DataWidget(
+            label: "Working Hours",
+            phoneNumber: working_hours,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+            visible: user_type=="2"?true:false, // Equivalent to `visible: user_type == 2`
+          ),
 
-        DataWidget(
-          label: "Company Name",
-          phoneNumber: company_name,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
+          DataWidget(
+            label: "Company Name",
+            phoneNumber: company_name,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
 
-        DataWidget(
-          label: "Contact Person",
-          phoneNumber: contact_person,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
+          DataWidget(
+            label: "Contact Person",
+            phoneNumber: contact_person,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
 
-        DataWidget(
-          label: "Authorization",
-          phoneNumber: authorization,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-          visible: user_type=="1"?true:false, // Equivalent to `visible: user_type == 2`
-        ),
+          DataWidget(
+            label: "Authorization",
+            phoneNumber: authorization,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+            visible: user_type=="1"?true:false, // Equivalent to `visible: user_type == 2`
+          ),
 
-        DataWidget(
-          label: "Service Type",
-          phoneNumber: service_type,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-          visible: user_type == "2" ? true : false,
-        ),
-
-
-        DataWidget(
-          label: "Mobile No",
-          phoneNumber: mobile_no,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-
-        DataWidget(
-          label: "Country Name",
-          phoneNumber: country_name,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-        DataWidget(
-          label: "State Name",
-          phoneNumber: state_name,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-
-        DataWidget(
-          label: "City Name",
-          phoneNumber: city_name,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-
-        DataWidget(
-          label: "Address",
-          phoneNumber: address,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-
-        DataWidget(
-          label: "Email",
-          phoneNumber: email,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
-
-        DataWidget(
-          label: "Email",
-          phoneNumber: email,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
+          DataWidget(
+            label: "Service Type",
+            phoneNumber: service_type,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+            visible: user_type == "2" ? true : false,
+          ),
 
 
-        DataWidget(
-          label: "Phone Number",
-          phoneNumber: mobile_no,
-          labelColor: AppColors.titleText,
-          phoneNumberColor: AppColors.titleText,
-          labelFontSize: 14,
-          phoneNumberFontSize: 16,
-        ),
+          DataWidget(
+            label: "Mobile No",
+            phoneNumber: mobile_no,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
 
-        const SizedBox(height: 5),
-        setTextButton(() {
-          // Confirm before deleting
-          Get.defaultDialog(
-            title: "Delete Account",
-            middleText: "Are you sure you want to delete your account?",
-            textConfirm: "Yes",
-            textCancel: "No",
-            onConfirm: () {
-              deleteAccount(); // Call the deleteAccount function
-              Get.back(); // Close the dialog
-            },
-            onCancel: () {
-              Get.back(); // Close the dialog
-            },
-          );
-        }, Text("Delete Account")) // Wrap the string with Text widget
-      ],
+          DataWidget(
+            label: "Country Name",
+            phoneNumber: country_name,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+          DataWidget(
+            label: "State Name",
+            phoneNumber: state_name,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+          DataWidget(
+            label: "City Name",
+            phoneNumber: city_name,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+          DataWidget(
+            label: "Address",
+            phoneNumber: address,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+          DataWidget(
+            label: "Email",
+            phoneNumber: email,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+          DataWidget(
+            label: "Email",
+            phoneNumber: email,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+
+          DataWidget(
+            label: "Phone Number",
+            phoneNumber: mobile_no,
+            labelColor: AppColors.titleText,
+            phoneNumberColor: AppColors.titleText,
+            labelFontSize: 14,
+            phoneNumberFontSize: 16,
+          ),
+
+          const SizedBox(height: 5),
+          setTextButton(() {
+            // Confirm before deleting
+            Get.defaultDialog(
+              title: "Delete Account",
+              middleText: "Are you sure you want to delete your account?",
+              textConfirm: "Yes",
+              textCancel: "No",
+              onConfirm: () {
+                deleteAccount(); // Call the deleteAccount function
+                Get.back(); // Close the dialog
+              },
+              onCancel: () {
+                Get.back(); // Close the dialog
+              },
+            );
+          }, Text("Delete Account")) // Wrap the string with Text widget
+        ],
+      ),
     );
   }
 

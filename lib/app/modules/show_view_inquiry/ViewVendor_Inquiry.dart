@@ -51,7 +51,7 @@ class _ViewvendorInquiryState extends State<ViewvendorInquiry> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Service:'),
+                              Text('Service: '),
                               SizedBox(width: 10),
                               Expanded(child: Text(viewInquiry['service'])),
                             ],
@@ -88,21 +88,32 @@ class _ViewvendorInquiryState extends State<ViewvendorInquiry> {
                                   ),
                                   Positioned(
                                     right: -10,
-                                      bottom: 10,
-                                      child: Column(
-                                    children: [
-                                      if (viewInquiry['sta_tus'] == "0")
-                                        IconButton(
-                                          icon: Icon(Icons.edit,
-                                              size: 30,
-                                              color: Colors.redAccent),
-                                          onPressed: () {
-                                            controller.editInquiry(
-                                                viewInquiry['id'].toString());
-                                          },
-                                        )
-                                    ],
-                                  ))
+                                    bottom: 10,
+                                    child: Column(
+                                      children: [
+                                        if (viewInquiry['sta_tus'] == "0")
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // Action to perform when the text is tapped
+                                                  controller.editInquiry(viewInquiry['id'].toString());
+                                                },
+                                                child: Text(
+                                                  "✏️ Send Quote",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.redAccent,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+
                                 ],
                               )
                             : null,

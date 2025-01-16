@@ -22,6 +22,7 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
     return GetBuilder<VendorRequestStatusController>(
       init: VendorRequestStatusController(),
       builder: (_) {
+        print('Rebuilding UI with arr: ${_.arr}');
         return Obx(() => _.arr.isEmpty
             ? Container(
           alignment: Alignment.center,
@@ -34,10 +35,12 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
                 size: 50,
                 color: AppColors.detailText,
               ),
-              setRegularText("No customers found. test", AppColors.titleText, 14)
+              setRegularText("No customers found", AppColors.titleText, 14)
             ],
           ),
         )
+       //admin request
+
             : ListView.builder(
           itemCount: _.arr.length,
           itemBuilder: (context, index) {

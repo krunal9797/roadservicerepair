@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyADS7EzzgC2aNPNK95reBdR6tglMVVDTDo',
-    appId: '1:612114844525:android:91239cca67c0ad8e7c6864',
+    appId: '1:612114844525:android:e3be6d37c9db90077c6864',
     messagingSenderId: '612114844525',
     projectId: 'road-repair-service',
     storageBucket: 'road-repair-service.appspot.com',
@@ -60,7 +60,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA0pErJUeTfFYcurfxfc2CX-Zjpt6n-x0o',
-    appId: '1:612114844525:ios:48a088b0a75484bf7c6864',
+    appId: '1:612114844525:ios:ee6d898ec94b45a97c6864',
     messagingSenderId: '612114844525',
     projectId: 'road-repair-service',
     storageBucket: 'road-repair-service.appspot.com',

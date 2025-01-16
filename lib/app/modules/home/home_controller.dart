@@ -18,6 +18,12 @@ class HomeController extends GetxController {
   RxInt currentImageIndex = 0.obs;
   late Timer _imageChangeTimer;
 
+  Future<bool> isLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("isLogin") ?? false; // Return false if the key doesn't exist
+  }
+
+
   // List of image paths
   final List<String> images = [
     'assets/images/road_repair_service_1.png',
@@ -64,6 +70,20 @@ class HomeController extends GetxController {
 
   onAlreadyRegisteredTap(){
     Get.to(() => const LoginView());
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    Future.delayed(const Duration(seconds: 0)).then((value) async {
+      if (await isLoggedIn()) {
+        Get.off(() => const SideBarView()); // Navigate to HomeView if logged in
+      } else {
+
+      }
+
+
+    });
   }
 
 }

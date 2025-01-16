@@ -98,11 +98,17 @@ class _RegisterViewState extends State<RegisterView> {
     "Fuel Delivery"
   ];
 
-  List<String> prices = List.generate(
-    11, // From 500 to 1000 in 50 increments -> (1000 - 500) / 50 + 1 = 11
-    (index) => "\$${500 + (index * 50)}",
-  );
-  String selectedPrice = "\$500";
+  List<String> prices = [
+    "Select", // Default option at the start
+    "\$0",    // Option for $0
+    ...List.generate(
+      11, // From 500 to 1000 in 50 increments -> (1000 - 500) / 50 + 1 = 11
+          (index) => "\$${500 + (index * 50)}",
+    ),
+  ];
+
+
+  String selectedPrice = "\$Select";
 
   List<Info> arrCountry = [];
   List<StateInfo> arrState = [];
@@ -723,7 +729,7 @@ class _RegisterViewState extends State<RegisterView> {
                 selectedPrice,
                 (value) {
                   setState(() {
-                    selectedPrice = value ?? "\$500";
+                    selectedPrice = value ?? "\$Select";
                   });
                 },
               ),

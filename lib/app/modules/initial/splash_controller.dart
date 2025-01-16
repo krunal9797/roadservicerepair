@@ -14,7 +14,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> requestLocationPermission(BuildContext context) async {
-    var status = await Permission.locationAlways.status;
+    var status = await Permission.location.status;
     if (!status.isGranted) {
       bool? result = await showDialog<bool>(
         context: context,
@@ -71,11 +71,11 @@ class SplashController extends GetxController {
       );
 
       if (result == true) {
-        var permissionResult = await Permission.locationAlways.request();
+        var permissionResult = await Permission.location.request();
         if (permissionResult.isGranted) {
-          Get.snackbar("Permission Granted", "Background location permission granted.");
+          Get.snackbar("Permission Granted", "location permission granted.");
         } else {
-          Get.snackbar("Permission Denied", "Background location permission is required.");
+          Get.snackbar("Permission Denied", "location permission is required.");
         }
       } else {
         Get.snackbar("Permission Denied", "Background location permission is required.");
@@ -94,7 +94,7 @@ class SplashController extends GetxController {
       }
 
       // Request location permission
-      requestLocationPermission(Get.context!);
+     requestLocationPermission(Get.context!);
     });
   }
 }

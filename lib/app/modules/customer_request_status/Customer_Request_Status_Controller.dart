@@ -26,10 +26,8 @@ class Customer_Request_Status_Controller extends  GetxController{
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email =prefs.getString('email');
-
     try {
       final response = await http.post(Uri.parse(Api.CUST_REQUEST_STATUS_CONTROLLER),
-
       body: jsonEncode({
 
         'email': email
