@@ -31,7 +31,7 @@ class ReqServiceController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery'];
+  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery','Car','Emissions' ,'Other'];
 
   final Map<String, List<String>> serviceDetails = {
     'Truck': ['Make',
@@ -43,6 +43,16 @@ class ReqServiceController extends GetxController {
       'Dump truck',
       'Isuzu',
       'Others'],
+    'Emissions': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+
   };
 
   // Reactive variables for selected service and detail
@@ -299,8 +309,10 @@ class ReqServiceController extends GetxController {
     try {
       var uri = Uri.parse(Api.REQUEST_SERVICE);
       var request = http.MultipartRequest('POST', uri);
-      request.fields['service'] = selectedService.value;
+
+      request.fields['service'] = txtService.text;
       request.fields['service_for'] = txtServiceFor.text;
+      request.fields['email']="";
       // request.fields['type'] = txtType.text;
       request.fields['name'] = txtName.text;
       request.fields['unit_number'] = txtUnitNo.text;

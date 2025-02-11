@@ -10,10 +10,9 @@ class SideBarController extends GetxController {
   // 4 View Vendor
   // 5 View Customer
   @override
-
-
   RxInt initialPage = 1.obs;
   String userType ='';
+
   final isDrawer = GlobalKey<DrawerControllerState>();
   void onInit() {
     // TODO: implement onInit
@@ -29,6 +28,6 @@ class SideBarController extends GetxController {
   showdrawer( ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
      userType = prefs.getString('user_type')!;
-     print("drawer"+userType);
+     print("drawer "+userType);
   }
 }

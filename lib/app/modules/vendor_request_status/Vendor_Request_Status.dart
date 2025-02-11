@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:roadservicerepair/app/modules/edit_vendor_request_status/edit_vendor_request_status.dart';
 import 'package:roadservicerepair/app/modules/vendor_request_status/Vendor_Request_status_Controller.dart';
 
 import '../../constants/app_colors.dart';
@@ -16,6 +18,7 @@ class VendorRequestStatus extends StatefulWidget {
 
 class _VendorRequestStatusState extends State<VendorRequestStatus> {
   int? _expandedIndex = 0;  // Initializing to 0 to expand the first element
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +71,48 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
                           ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildRow('Service For :', customer['service_for']),
-                          // _buildRow('Type :', customer['type']),
-                          _buildRow('Name :', customer['name']),
-                          _buildRow('Unit Number :', customer['unit_number']),
-                          _buildRow('Driver Number :', customer['driver_number']),
-                          _buildRow('Address :', customer['address']),
-                          _buildRow('Remark :', customer['remark']),
-                          _buildRow('Estimate Time :', customer['est_time']),
-                          _buildRow('Estimate Price :', customer['est_price']),
-                          _buildRow('Vendor Name :', customer['vendor_name']),
-                          _buildRow('Vendor Email :', customer['vendor_email']),
-                          _buildRow('Vendor Mobile :', customer['vendor_mobile']),
-                          _buildRow('Vendor Address :', customer['vendor_address']),
-                          _buildRow('Status:', customer['rname']),
+                          _buildRow('Service For:', customer['service_for'] ?? 'N/A'),
+                          _buildRow('Name:', customer['name'] ?? 'N/A'),
+                          _buildRow('Unit Number:', customer['unit_number'] ?? 'N/A'),
+                          //_buildRow('Driver Number:', customer['driver_number'] ?? 'N/A'),
+                          _buildRow('Address:', customer['address'] ?? 'N/A'),
+                          _buildRow('Remark:', customer['remark'] ?? 'N/A'),
+                          _buildRow('Estimate Time:', customer['est_time'] ?? 'N/A'),
+                          _buildRow('Estimate Price:', customer['est_price'] ?? 'N/A'),
+                          _buildRow('Vendor Name:', customer['vendor_name'] ?? 'N/A'),
+                          _buildRow('Vendor Email:', customer['vendor_email'] ?? 'N/A'),
+                          _buildRow('Vendor Mobile:', customer['vendor_mobile'] ?? 'N/A'),
+                          _buildRow('Vendor Address:', customer['vendor_address'] ?? 'N/A'),
+
+                          Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                                child:                           _buildRow('Status:', customer['rname'] ?? 'N/A'),
+                              ),
+                              //krunal edit
+
+                              Positioned(
+                                right: 16, // Adjust this value for precise positioning
+                                bottom: 8, // Adjust this value as needed
+                                child: GestureDetector(
+                                  onTap: () {
+                                    editVendorRequestStatus(customer['id']);
+                                    // Action to perform when the text is tapped
+                                  },
+                                  child: Text(
+                                    "✏️ Edit Status",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
                         ],
                       )
                           : null,
@@ -114,4 +145,11 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
       ),
     );
   }
+
+  Future<void> editVendorRequestStatus( String id) async{
+    print("krunal "+id);
+    Get.to(() => const EditVendorRequestStatus(), arguments: id);
+  }
+
+
 }

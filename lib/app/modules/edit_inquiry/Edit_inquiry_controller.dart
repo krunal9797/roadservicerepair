@@ -32,13 +32,8 @@ class EditInquiryController extends GetxController {
   Rx<File?> imagePath = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
-  final List<String> services = [
-    'Truck',
-    'Trailer',
-    'Tires',
-    'Towing',
-    'Fuel Delivery'
-  ];
+  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery','Car','Emissions' ,'Other'];
+
   final Map<String, List<String>> serviceDetails = {
     'Truck': ['Make',
       'Freightliner',
@@ -49,6 +44,16 @@ class EditInquiryController extends GetxController {
       'Dump truck',
       'Isuzu',
       'Others'],
+    'Emissions': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+
   };
 
   // Reactive variables for selected service and detail

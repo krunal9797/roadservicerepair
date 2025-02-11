@@ -32,6 +32,8 @@ class ViewInquiryController extends GetxController {
       Get.snackbar('Error', 'Failed to load Request');
     }
   }
+
+
   Future<void> deleteItem( String id) async{
     try {
       final response = await http.post(

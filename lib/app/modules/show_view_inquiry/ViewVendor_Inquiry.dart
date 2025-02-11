@@ -73,8 +73,8 @@ class _ViewvendorInquiryState extends State<ViewvendorInquiry> {
                                       _buildRow('Unit Number:',
                                           viewInquiry['unit_number']),
 
-                                      _buildRow('Driver Number:',
-                                          viewInquiry['driver_number']),
+                                      // _buildRow('Driver Number:',
+                                      //     viewInquiry['driver_number']),
 
                                       _buildRow('Address:',
                                           viewInquiry['address']),

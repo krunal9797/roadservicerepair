@@ -11,6 +11,7 @@ import 'package:roadservicerepair/app/modules/show_view_inquiry/ViewVendor_Inqui
 import 'package:roadservicerepair/app/modules/side_bar/side_bar_controller.dart';
 import 'package:roadservicerepair/app/modules/vendor_request/vendor_request_view.dart';
 import 'package:roadservicerepair/app/modules/vendor_request_status/Vendor_Request_Status.dart';
+import 'package:roadservicerepair/app/modules/vendor_status/vendor_status_view.dart';
 import 'package:roadservicerepair/app/modules/view_customer/view_customer_view.dart';
 import 'package:roadservicerepair/app/modules/view_inquiry/view_inquiry.dart';
 import 'package:roadservicerepair/app/modules/view_vendor/view_vendor_view.dart';
@@ -61,6 +62,8 @@ class _SideBarViewState extends State<SideBarView> {
                                          ? "Customer Request Status"
                                         : _.initialPage.value==8
                                           ? "Vendor Request Status"
+                          : _.initialPage.value==10
+                          ? "Vendor Status"
                                          : "View Inquiry",
                       AppColors.titleText,
                       16),
@@ -232,8 +235,21 @@ class _SideBarViewState extends State<SideBarView> {
                             ]  ),
                       ),
                     ),
+                    // Text(" type "+_.userType),
+                    Obx(
+                          () => Visibility(
+                        visible: _.userType== "2" || _.userType=="0",
 
+                        child: Column(
+                            children: [
+                              const SizedBox(height: 10),
 
+                              setSideBarButton("vendor status", () {
+                                _.onPageSelect(10);  // Changed from 9 to 10
+                              }, _.initialPage.value == 10),
+                            ]  ),
+                      ),
+                    ),
 
                     const SizedBox(height: 30),
 
@@ -266,6 +282,8 @@ class _SideBarViewState extends State<SideBarView> {
                                  ? const CustomerRequestStatus()
                                  : _.initialPage.value==8
                                  ? const VendorRequestStatus()
+                                 :_.initialPage.value==10
+                                  ? const VendorStatusView()
                                  : const ViewvendorInquiry()
               ),
             ),

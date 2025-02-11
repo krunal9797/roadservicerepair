@@ -36,7 +36,7 @@ class _VendorReqViewState extends State<VendorReqView> {
                         color: AppColors.detailText,
                       ),
                       setRegularText(
-                          "No vendor request found.", AppColors.titleText, 14)
+                          "No vendor_request_status_edit request found.", AppColors.titleText, 14)
                     ],
                   ),
                 )

@@ -185,7 +185,7 @@ class _ProfileViewState extends State<ProfileView> {
           image = data['image'];
           user_type = data['user_type'];
 
-          print("vendor");
+          print("vendor_request_status_edit");
           print(user_type == "2" ? true : false);
           print("customer");
           print(user_type == "1" ? true : false);
@@ -193,7 +193,7 @@ class _ProfileViewState extends State<ProfileView> {
           print(user_type == "0" ? true : false);
 
           print("________________________________");
-          print("vendor");
+          print("vendor_request_status_edit");
           print(user_type == 2 ? true : false);
           print("customer");
           print(user_type == 1 ? true : false);
@@ -416,7 +416,7 @@ class _ProfileViewState extends State<ProfileView> {
                 Get.back(); // Close the dialog
               },
               onCancel: () {
-                Get.back(); // Close the dialog
+                Get.to(() => const ProfileView());
               },
             );
           }, Text("Delete Account")) // Wrap the string with Text widget

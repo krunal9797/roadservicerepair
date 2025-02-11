@@ -51,7 +51,7 @@ class _EditinquiryState extends State<Editinquiry> {
             const SizedBox(height: 15),
             // Conditional Second Dropdown (Make or Model)
             Obx(() {
-              if (controller.selectedService.value == 'Truck') {
+              if (controller.selectedService.value == 'Truck' || controller.selectedService.value == 'Emissions') {
                 // Dropdown for 'Truck'
                 return setTextFieldDrop(
                   context,
@@ -78,6 +78,19 @@ class _EditinquiryState extends State<Editinquiry> {
                     context,
                     "Enter Tire Size",
                     "Enter Tire Size",
+                    controller.isServiceFor,
+                    controller.txtServiceFor,
+                    controller.fnServiceFor,
+                  ),
+                );
+              } else if (controller.selectedService.value == 'Car') {
+                // Textbox for 'Tires'
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: setTextField(
+                    context,
+                    "Enter Car Detail",
+                    "Enter Car Detail",
                     controller.isServiceFor,
                     controller.txtServiceFor,
                     controller.fnServiceFor,

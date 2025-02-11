@@ -51,11 +51,11 @@ class ViewvendorInquiryController extends GetxController{
         List<dynamic> list = data['info'];
         arr.assignAll(list);
       } else {
-        Get.snackbar('Error', 'Failed to load vendor Inquiry');
+        Get.snackbar('Error', 'Failed to load vendor_request_status_edit Inquiry');
       }
     } catch (e) {
       print(e);
-      Get.snackbar('Error', 'Failed to load vendor Inquiry');
+      Get.snackbar('Error', 'Failed to load vendor_request_status_edit Inquiry');
     }
   }
 

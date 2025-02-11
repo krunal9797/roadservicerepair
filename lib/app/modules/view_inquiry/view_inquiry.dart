@@ -52,74 +52,83 @@ class _ViewInquiryViewState extends State<ViewInquiryView> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Card(
-                    child:ListTile(
-
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      color: viewInquiry['email'] != null && viewInquiry['email'].isNotEmpty
+                          ? Colors.greenAccent.withOpacity(0.2) // Color when email exists
+                          : Colors.redAccent.withOpacity(0.2), // Color when email is empty
+                      child:ListTile(
+                        title: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('service :'),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(child: Text(viewInquiry['service']))
+                            ],
+                          ),
+                        ),
+                        subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('service :'),
-                            SizedBox(
-                              width: 5,
+                            if (viewInquiry['email'] != null && viewInquiry['email'].isNotEmpty)
+                              LabelValueRow(
+                                label: 'Email :',
+                                value: viewInquiry['email'],
+                              ),
+                            LabelValueRow(
+                              label: 'Service For :',
+                              value: viewInquiry['service_for'],
                             ),
-                            Expanded(child: Text(viewInquiry['service']))
+
+                            LabelValueRow(
+                              label: 'Unit Number :',
+                              value: viewInquiry['unit_number'],
+                            ),
+                            LabelValueRow(
+                              label: 'Driver Number :',
+                              value: viewInquiry['driver_number'],
+                            ),
+                            LabelValueRow(
+                              label: 'Address :',
+                              value: viewInquiry['address'],
+                            ),
+                            LabelValueRow(
+                              label: 'Remark :',
+                              value: viewInquiry['remark'],
+                            ),
+                            LabelValueRow(
+                              label: 'Creation :',
+                              value: viewInquiry['createdon'],
+                            ),
                           ],
                         ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          LabelValueRow(
-                            label: 'Service For :',
-                            value: viewInquiry['service_for'],
-                          ),
-                         
-                          LabelValueRow(
-                            label: 'Unit Number :',
-                            value: viewInquiry['unit_number'],
-                          ),
-                          LabelValueRow(
-                            label: 'Driver Number :',
-                            value: viewInquiry['driver_number'],
-                          ),
-                          LabelValueRow(
-                            label: 'Address :',
-                            value: viewInquiry['address'],
-                          ),
-                          LabelValueRow(
-                            label: 'Remark :',
-                            value: viewInquiry['remark'],
-                          ),
-                          LabelValueRow(
-                            label: 'Creation :',
-                            value: viewInquiry['createdon'],
-                          ),
-                        ],
-                      ),
 
-                      trailing: Wrap(
-                        spacing: -16,
-                        children: [
+                        trailing: Wrap(
+                          spacing: -16,
+                          children: [
 
-                          IconButton(
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 30,
-                              color: Colors.redAccent,
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                                size: 30,
+                                color: Colors.redAccent,
+                              ),
+                              onPressed: () {
+
+                                _.deleteItem(viewInquiry['id']);
+                              },
                             ),
-                            onPressed: () {
+                          ],
+                        ),
 
-                              _.deleteItem(viewInquiry['id']);
-                            },
-                          ),
-                        ],
+
+
                       ),
-
-
-
                     ),
                   ),
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/Api.dart';
 import '../../utils/global.dart';
@@ -11,9 +12,11 @@ import '../edit_inquiry/Edit_inquiryView.dart';
 class VendorReqController extends GetxController {
   RxList arr = [].obs;
 
-  void onInit() {
+
+  void onInit() async{
     super.onInit();
     print("kkcs "+IsRefresh.toString());
+
 
     fetchShowVendorRequest();
 

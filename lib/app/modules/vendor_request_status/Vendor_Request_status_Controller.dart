@@ -9,46 +9,51 @@ import '../../constants/Api.dart';
 class VendorRequestStatusController extends GetxController{
 
   RxList arr = [].obs;
+  String userType ='';
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
-    fetchVendor();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userType = prefs.getString('user_type')!;
+    print("drawer "+userType);
+
+    await fetchVendor();
   }
 
 
   Future<void> fetchVendor() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email =prefs.getString('email');
+    String? email = prefs.getString('email');
 
     try {
-      final response = await http.post(Uri.parse(Api.VENDOR_REQUEST_STATUS_CONTROLLER),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
-          body: jsonEncode({
-
-            'vendor_email': email
-          })
+      final response = await http.post(
+        Uri.parse(Api.VENDOR_REQUEST_STATUS_CONTROLLER),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'vendor_email': email,
+        }),
       );
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['status'] == 1) {
           final info = data['info'];
           if (info is Map) {
-            arr.assignAll([info]); // Wrap in a list if it's a single object
+            arr.assignAll([info]);
           } else if (info is List) {
-            arr.assignAll(info); // Directly assign if it's already a list
+            arr.assignAll(info);
           }
         }
       } else {
-      //  Get.snackbar('Error', 'Failed to load customers');
+        print('Error: Failed to load customers. Status Code: ${response.statusCode}');
       }
     } catch (e) {
-     // Get.snackbar('Error', 'Failed to load customers');
+      print('Error: $e');
     }
   }
+
 
 }

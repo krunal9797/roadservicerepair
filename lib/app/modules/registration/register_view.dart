@@ -99,13 +99,14 @@ class _RegisterViewState extends State<RegisterView> {
   ];
 
   List<String> prices = [
-    "Select", // Default option at the start
+    "\$Select", // Default option at the start
     "\$0",    // Option for $0
     ...List.generate(
       11, // From 500 to 1000 in 50 increments -> (1000 - 500) / 50 + 1 = 11
           (index) => "\$${500 + (index * 50)}",
     ),
   ];
+
 
 
   String selectedPrice = "\$Select";
@@ -198,7 +199,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   Future<void> register() async {
 
-    print("krunal"+" vendor type "+vendorType.toString());
+    print("krunal"+" vendor_request_status_edit type "+vendorType.toString());
     print("krunal"+" cust type "+vendorFor.toString());
     print("krunal"+"type of serivce "+vendorFor.toString());
     print("krunal"+"type of serivce "+controller.txtService.value.toString());
@@ -515,7 +516,7 @@ class _RegisterViewState extends State<RegisterView> {
                   child: setDropDown(
                     context,
                     "Vendor Type",
-                    "Select vendor type",
+                    "Select vendor_request_status_edit type",
                     isVendorType,
                     arrVendorType,
                     (String? value) => {vendorType = value},

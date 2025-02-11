@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,66 +36,71 @@ class RequestController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  List<String> arrServices = [
-    "Truck Repair",
-    "Trailer Repair",
-    "Truck Tire",
-    "Trailer Tire",
-    "Towing"
-  ];
-  List<String> arrTypeOfTire = ["Steer", "Driver"];
-  List<String> arrTowingSrv = ["Truck", "Trailer", "Both"];
-  List<String> arrTruckMake = [
-    "Freightliner ",
-    "Volvo",
-    "Kenworth",
-    "Peterbilt",
-    "International",
-    "Other"
-  ];
+  final List<String> services = ['Truck', 'Trailer', 'Tires', 'Towing', 'Fuel Delivery','Car','Emissions' ,'Other'];
 
-  List<Info> arrCountry = [];
-  List<StateInfo> arrState = [];
-  List<CityInfo> arrCity = [];
+  final Map<String, List<String>> serviceDetails = {
+    'Truck': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
+    'Emissions': ['Make',
+      'Freightliner',
+      'Volvo',
+      'Kenworth',
+      'Peterbilt',
+      'International',
+      'Dump truck',
+      'Isuzu',
+      'Others'],
 
-  //Shake Key
+  };
+
+  // Reactive variables for selected service and detail
+  RxString selectedService = "".obs;
+  RxString selectedServiceDetail = "".obs;
+
+  //Shake Key0
   final isService = GlobalKey<ShakeWidgetState>();
   final isServiceFor = GlobalKey<ShakeWidgetState>();
   final isType = GlobalKey<ShakeWidgetState>();
   final isName = GlobalKey<ShakeWidgetState>();
-  final isUnitNumber = GlobalKey<ShakeWidgetState>();
-  final isDriverNumber = GlobalKey<ShakeWidgetState>();
+  final isUnitNo = GlobalKey<ShakeWidgetState>();
+  final isDriverNo = GlobalKey<ShakeWidgetState>();
   final isAddress = GlobalKey<ShakeWidgetState>();
   final isRemark = GlobalKey<ShakeWidgetState>();
-
 
   //Controller
   TextEditingController txtService = TextEditingController();
   TextEditingController txtServiceFor = TextEditingController();
   TextEditingController txtType = TextEditingController();
   TextEditingController txtName = TextEditingController();
-  TextEditingController txtUnitNumber = TextEditingController();
-  TextEditingController txtDriverNumber = TextEditingController();
+  TextEditingController txtUnitNo = TextEditingController();
+  TextEditingController txtDriverNo = TextEditingController();
   TextEditingController txtAddress = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
 
 
-  //FocusNode
   FocusNode fnService = FocusNode();
   FocusNode fnServiceFor = FocusNode();
   FocusNode fnType = FocusNode();
   FocusNode fnName = FocusNode();
-  FocusNode fnUnitNumber = FocusNode();
-  FocusNode fnDriverNumber = FocusNode();
+  FocusNode fnUnitNo = FocusNode();
+  FocusNode fnDriverNo = FocusNode();
   FocusNode fnAddress = FocusNode();
   FocusNode fnRemark = FocusNode();
+  FocusNode fnImage = FocusNode();
 
   var isLoadingCountry = false.obs;
   var isLoadingState = false.obs;
   var isLoadingCity = false.obs;
 
   //Operations
-  RxString selectedService = ''.obs;
   RxString selectedTruck = ''.obs;
 
   @override
@@ -106,19 +113,12 @@ class RequestController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchCountries() async {
-    isLoadingCountry.value = true;
-    final response = await http.get(Uri.parse(Api.COUNTRY));
-    if (response.statusCode == 200) {
-      Country countryData = Country.fromJson(json.decode(response.body));
-      arrCountry = countryData.info ?? [];
-    }
-    isLoadingCountry.value = false;
-  }
 
   getList() async {
     prefs = await SharedPreferences.getInstance();
-    txtDriverNumber.text = prefs.getString("mobile_no")!;
+    txtDriverNo.text = prefs.getString("mobile_no")!;
+    txtEmail.text = prefs.getString("email")!;
+
     // txtEmail.text = prefs.getString("email")!;
   }
 
@@ -367,10 +367,11 @@ class RequestController extends GetxController {
 
       request.fields['service'] = txtService.text;
       request.fields['service_for'] = txtServiceFor.text;
+      request.fields['email']=txtEmail.text;
       request.fields['type'] = txtType.text;
       request.fields['name'] = txtName.text;
-      request.fields['unit_number'] = txtUnitNumber.text;
-      request.fields['driver_number'] = txtDriverNumber.text;
+      request.fields['unit_number'] = txtUnitNo.text;
+      request.fields['driver_number'] = txtDriverNo.text;
       request.fields['address'] = txtAddress.text;
       request.fields['remark'] = txtRemark.text;
 
@@ -383,6 +384,7 @@ class RequestController extends GetxController {
 
       var response = await request.send();
       if (response.statusCode == 200) {
+        clearForm(); // Clear the form data
         Get.to(() => const SideBarView());
         //  Navigator.push(context, MaterialPageRoute(builder: (context) => const SideBarView(),));
         Get.snackbar("Success", "Request sent successfully",
@@ -400,6 +402,22 @@ class RequestController extends GetxController {
     }
   }
 
+  void clearForm() {
+    txtService.clear();
+    txtServiceFor.clear();
+    txtType.clear();
+    txtName.clear();
+    txtUnitNo.clear();
+    txtDriverNo.clear();
+    txtAddress.clear();
+    txtRemark.clear();
+
+    selectedService.value = '';
+    selectedTruck.value = '';
+    imagePath.value = null;
+  }
+
+
   Future<File> getDefaultImageFile() async {
     // Load the asset as a byte array
     final byteData = await rootBundle.load('assets/images/road_repair_service_1.png');
@@ -414,5 +432,85 @@ class RequestController extends GetxController {
     await tempFile.writeAsBytes(byteData.buffer.asUint8List());
 
     return tempFile;
+  }
+
+  Future<bool> requestLocationPermission() async {
+    // Request location permission using permission_handler
+    PermissionStatus status = await Permission.location.request();
+
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      // The permission was denied
+      return false;
+    } else if (status.isPermanentlyDenied) {
+      // If the permission is permanently denied, open settings
+      openAppSettings();
+      return false;
+    }
+    return false;
+  }
+
+  Future<void> fetchCurrentLocation(TextEditingController controller) async {
+    // Check if location services are enabled
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Show dialog to enable location services
+      Get.defaultDialog(
+        title: "Location Disabled",
+        middleText: "Please enable location services to continue.",
+        textConfirm: "Enable",
+        onConfirm: () async {
+          Get.back(); // Close the dialog
+          await Geolocator.openLocationSettings();
+        },
+        textCancel: "Cancel",
+      );
+      return;
+    }
+
+    // Check and request location permissions
+    bool permissionGranted = await requestLocationPermission();
+    if (!permissionGranted) {
+      // If location permission is not granted
+      Get.snackbar(
+        "Permission Denied",
+        "Location permissions are required to fetch your current location.",
+      );
+      return;
+    }
+
+    // Show progress dialog while fetching location
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    try {
+      // Fetch the current position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Fetch the address from the latitude and longitude
+      List<Placemark>? placemarks = await GeocodingPlatform.instance
+          ?.placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks != null && placemarks.isNotEmpty) {
+        // Process the address
+        Placemark place = placemarks.first;
+        String address = "${place.name}, ${place.street}, ${place.locality}, "
+            "${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+        controller.text =
+            address; // Update the text field with the full address
+      } else {
+        Get.snackbar("Error", "No address found for this location.");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Failed to fetch location: $e");
+    } finally {
+      // Close the progress dialog after fetching the location
+      Get.back();
+    }
   }
 }
