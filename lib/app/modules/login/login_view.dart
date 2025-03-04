@@ -147,6 +147,18 @@ class LoginView extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    Center(
+                      child: setTextButton(
+                        controller.onBackToHome,
+                        setSemiText(
+                          "Back to Home",
+                          AppColors.titleText,
+                          14,
+                          textDecoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
             
                     // Center(
                     //   child: setButton(

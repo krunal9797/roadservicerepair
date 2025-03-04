@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/modules/edit_vendor_request_status/edit_vendor_request_status_controller.dart';
 import 'package:roadservicerepair/app/modules/side_bar/side_bar_view.dart';
+import 'package:roadservicerepair/app/modules/vendor_request_status/Vendor_Request_Status.dart';
 import 'package:roadservicerepair/app/utils/text_utl.dart';
 
 import '../../utils/text_field_utl.dart';
@@ -73,14 +74,14 @@ class _EditVendorRequestStatusState extends State<EditVendorRequestStatus> {
                 controller.txtUnitNumber,
                 controller.fnUnitNumber,
               ),
-              setTextField1(
-                context,
-                "Driver Number",
-                "Enter Driver Number",
-                controller.isDriverNumber,
-                controller.txtDriverNumber,
-                controller.fnDriverNumber,
-              ),
+              // setTextField1(
+              //   context,
+              //   "Driver Number",
+              //   "Enter Driver Number",
+              //   controller.isDriverNumber,
+              //   controller.txtDriverNumber,
+              //   controller.fnDriverNumber,
+              // ),
               setTextField1(
                 context,
                 "Address",

@@ -11,15 +11,24 @@ import '../edit_inquiry/Edit_inquiryView.dart';
 
 class VendorReqController extends GetxController {
   RxList arr = [].obs;
-
-
+  Timer? _refreshTimer;
+  int count = 0;
   void onInit() async{
     super.onInit();
     print("kkcs "+IsRefresh.toString());
 
-
     fetchShowVendorRequest();
+    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      count = count + 1;
+      print("krunal count "+count.toString());
+      fetchShowVendorRequest();
+    });
+  }
 
+  @override
+  void onClose() {
+    _refreshTimer?.cancel();
+    super.onClose();
   }
 
   Future<void> fetchShowVendorRequest() async {
@@ -30,6 +39,7 @@ class VendorReqController extends GetxController {
         List<dynamic> list = data['info'];
 
         print(data);
+        arr.clear();
         arr.assignAll(list);
       } else {
     //    Get.snackbar('Error', 'Failed to Laod Vendor Request');

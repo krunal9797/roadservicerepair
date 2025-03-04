@@ -85,10 +85,10 @@ class _VendorStatusViewState extends State<VendorStatusView> {
                             label: 'Unit Number :',
                             value: viewInquiry['unit_number'],
                           ),
-                          LabelValueRow(
-                            label: 'Driver Number :',
-                            value: viewInquiry['driver_number'],
-                          ),
+                          // LabelValueRow(
+                          //   label: 'Driver Number :',
+                          //   value: viewInquiry['driver_number'],
+                          // ),
                           LabelValueRow(
                             label: 'Address :',
                             value: viewInquiry['address'],

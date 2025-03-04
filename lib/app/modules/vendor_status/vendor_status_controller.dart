@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
@@ -9,30 +10,81 @@ import 'package:shared_preferences/shared_preferences.dart';
 class VendorStatusController extends GetxController {
   RxList arr = [].obs;
   String userType ='';
+  String userEmail = '';
+  Timer? _refreshTimer;
+  int count = 0;
 
   void onInit() async{
     super.onInit();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type')!;
+    userEmail = prefs.getString('email')!;
+
+    print("krunal count "+count.toString());
+    print("krunal userType "+userType);
     print("drawer "+userType);
+    if(userType == "0"){
+      fetchViewVendorStatus();
+    }else if(userType == "2"){
+      fetchViewVendorStatus2();
+    }
 
     print("ViewInquiryController");
-    fetchViewVendorStatus();
+    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      count = count + 1;
+      print("krunal count "+count.toString());
+      print("krunal count "+userType);
+      if(userType == "0"){
+        print("krunal count admin 0 "+userType);
+        fetchViewVendorStatus();
+      }else if(userType == "2"){
+        print("krunal count vendor 1 "+userType);
+        fetchViewVendorStatus2();
+      }
+    });
+
   }
 
-  Future<void> fetchViewVendorStatus() async{
+  Future<void> fetchViewVendorStatus2() async{
     try {
-      final response = await http.get(Uri.parse(Api.GET_VENDOR_STATUS));
+
+      final response = await http.post(
+          Uri.parse("https://roadservice.roadservicerepair.com/api/get_vendor_status.php"),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'vendor_email': userEmail,
+          }),
+      );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         List<dynamic> list = data['info'];
         print(data);
+        arr.clear();
         arr.assignAll(list);
       } else {
         Get.snackbar('Error', 'Failed to Laod Vendor Request');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load Request');
+     // Get.snackbar('Error', 'Failed to load Request');
+    }
+  }
+
+  Future<void> fetchViewVendorStatus() async{
+    try {
+      final response = await http.get(Uri.parse("https://roadservice.roadservicerepair.com/api/view_vendor_status.php"));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        List<dynamic> list = data['info'];
+        print(data);
+        arr.clear();
+        arr.assignAll(list);
+      } else {
+        Get.snackbar('Error', 'Failed to Laod Vendor Request');
+      }
+    } catch (e) {
+     // Get.snackbar('Error', 'Failed to load Request');
     }
   }
 

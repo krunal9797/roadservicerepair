@@ -28,5 +28,6 @@ class Api{
   static const GET_STATUS =BASEURL+'get_status.php';
   static const VENDOR_UPDATE_INQUIRY=BASEURL+'vendor_inquery_status.php';
   static const GET_VENDOR_STATUS =BASEURL+'get_vendor_status.php';
+  static const VIEW_VENDOR_STATUS =BASEURL+'view_vendor_status.php';
 }
 

@@ -2,8 +2,11 @@
 
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/modules/request_service/request_service_controller.dart';
 import 'package:roadservicerepair/app/utils/button_utl.dart';
@@ -14,6 +17,27 @@ import 'package:roadservicerepair/model/CityData.dart';
 
 import '../../../model/Country.dart';
 import '../../../model/StateData.dart';
+import '../../push_notifications.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingInBackgroundHandler(
+    RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handler background message ${message.messageId}");
+
+  RemoteMessage? initialMessage =
+  await FirebaseMessaging.instance.getInitialMessage();
+
+  if (initialMessage != null) {
+    PushNotification notifications = PushNotification(
+      title: initialMessage.notification?.title ?? '',
+      body: initialMessage.notification?.body ?? '',
+      dataTitle: initialMessage.data['title'] ?? '',
+      dataBody: initialMessage.data['body'] ?? '',
+    );
+    // You can handle the notification here
+  }
+}
 
 class ReqServiceView extends StatefulWidget {
   const ReqServiceView({Key? key}) : super(key: key);
@@ -24,6 +48,88 @@ class ReqServiceView extends StatefulWidget {
 
 class _ReqServiceViewState extends State<ReqServiceView> {
   final controller = Get.put(ReqServiceController());
+  late FirebaseMessaging _messaging;
+  int _totalNotifications = 0;
+  late PushNotification pushNotification;
+
+  void registerNotification() async {
+    await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
+    FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingInBackgroundHandler);
+
+    NotificationSettings setting = await _messaging.requestPermission(
+        alert: true, badge: true, provisional: false, sound: true);
+
+    if (setting.authorizationStatus == AuthorizationStatus.authorized) {
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print("Received Message : ${message.notification?.body}");
+
+        PushNotification notifications = PushNotification(
+          title: message.notification?.title ?? '',
+          body: message.notification?.body ?? '',
+          dataTitle: message.data['title'] ?? '',
+          dataBody: message.data['body'] ?? '',
+        );
+        setState(() {
+          pushNotification = notifications;
+          _totalNotifications++;
+        });
+
+        if (pushNotification != null) {
+          showSimpleNotification(Text(notifications.title),
+              subtitle: Text(notifications.body ?? ''));
+        }
+      });
+    }
+  }
+
+  //for handlening the notification in terminated state
+  checkforInitialMessage() async {
+    await Firebase.initializeApp();
+    RemoteMessage? initialMessage =
+    await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      PushNotification notifications = PushNotification(
+        title: initialMessage.notification?.title ?? '',
+        body: initialMessage.notification?.body ?? '',
+        dataTitle: initialMessage.data['title'] ?? '',
+        dataBody: initialMessage.data['body'] ?? '',
+      );
+
+      setState(() {
+        pushNotification = notifications;
+        _totalNotifications++;
+      });
+    }
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    registerNotification();
+    checkforInitialMessage();
+
+    //for handling notification when app is in background but not terminated
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      PushNotification notifications = PushNotification(
+        title: message.notification?.title ?? '',
+        body: message.notification?.body ?? '',
+        dataTitle: message.data['title'] ?? '',
+        dataBody: message.data['body'] ?? '',
+      );
+
+      setState(() {
+        pushNotification = notifications;
+        _totalNotifications++;
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

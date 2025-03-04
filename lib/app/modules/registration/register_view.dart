@@ -516,7 +516,7 @@ class _RegisterViewState extends State<RegisterView> {
                   child: setDropDown(
                     context,
                     "Vendor Type",
-                    "Select vendor_request_status_edit type",
+                    "Select Vendor type",
                     isVendorType,
                     arrVendorType,
                     (String? value) => {vendorType = value},

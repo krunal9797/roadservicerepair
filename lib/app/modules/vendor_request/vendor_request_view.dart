@@ -54,7 +54,7 @@ class _VendorReqViewState extends State<VendorReqView> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('vendor_name : '),
+                                  Text('Vendor name : '),
                                   SizedBox(
                                     width: 10,
                                   ),
