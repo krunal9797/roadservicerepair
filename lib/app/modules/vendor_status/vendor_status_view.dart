@@ -16,6 +16,8 @@ class VendorStatusView extends StatefulWidget {
 
 class _VendorStatusViewState extends State<VendorStatusView> {
   dynamic viewInquiry;
+  int? selectedVsId;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<VendorStatusController>(
@@ -80,15 +82,14 @@ class _VendorStatusViewState extends State<VendorStatusView> {
                             label: 'Name :',
                             value: viewInquiry['name'],
                           ),
-
                           LabelValueRow(
                             label: 'Unit Number :',
                             value: viewInquiry['unit_number'],
                           ),
-                          // LabelValueRow(
-                          //   label: 'Driver Number :',
-                          //   value: viewInquiry['driver_number'],
-                          // ),
+                          LabelValueRow(
+                            label: 'Driver Number :',
+                            value: viewInquiry['driver_number'],
+                          ),
                           LabelValueRow(
                             label: 'Address :',
                             value: viewInquiry['address'],
@@ -131,7 +132,11 @@ class _VendorStatusViewState extends State<VendorStatusView> {
                             label: 'reason :',
                             value: viewInquiry['reason'],
                           ),
-
+                          LabelValueRow(
+                            label: 'vsid  :',
+                            value: viewInquiry['vs_id'],
+                          ),
+                          //
                           // Text("user " + _.userType),
                           Stack(
                             children: [
@@ -149,11 +154,15 @@ class _VendorStatusViewState extends State<VendorStatusView> {
                                   bottom: 8, // Adjust this value as needed
                                   child: GestureDetector(
                                     onTap: () {
-                                      _.editVendorStatus(viewInquiry['vs_id']);
-                                      // Action to perform when the text is tapped
+                                      String vsId = _.arr[index]['vs_id'].toString();  // Ensure correct type
+                                      _.editVendorStatus(vsId);
+
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("Selected vs_id: $vsId")),
+                                      );
                                     },
                                     child: Text(
-                                      "✏️ Edit Status",
+                                      "✏️ Edit Status " + _.arr[index]['vs_id'].toString(),
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Colors.redAccent,

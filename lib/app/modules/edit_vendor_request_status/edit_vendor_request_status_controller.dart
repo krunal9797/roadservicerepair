@@ -23,6 +23,10 @@ class EditVendorRequestStatusController extends GetxController{
   final fnName = FocusNode();
   final isName = GlobalKey();
 
+  final txtEmail = TextEditingController();
+  final fnEmail = FocusNode();
+  final isEmail = GlobalKey();
+
   final txtUnitNumber = TextEditingController();
   final fnUnitNumber = FocusNode();
   final isUnitNumber = GlobalKey();
@@ -136,6 +140,7 @@ class EditVendorRequestStatusController extends GetxController{
       txtService.text = info.service;
       txtServiceFor.text = info.serviceFor;
       txtName.text = info.name;
+      txtEmail.text = info.cust_email;
       txtUnitNumber.text = info.unitNumber;
       txtDriverNumber.text = info.driverNumber;
       txtAddress.text = info.address;
@@ -169,6 +174,7 @@ class EditVendorRequestStatusController extends GetxController{
       "service": txtService.text,
       "service_for": txtServiceFor.text,
       "name": txtName.text,
+      "cust_email": txtEmail.text,
       "unit_number": txtUnitNumber.text,
       "driver_number": txtDriverNumber.text,
       "address": txtAddress.text,
@@ -215,6 +221,7 @@ class EditVendorRequestStatusController extends GetxController{
     txtService.clear();
     txtServiceFor.clear();
     txtName.clear();
+    txtEmail.clear();
     txtUnitNumber.clear();
     txtDriverNumber.clear();
     txtAddress.clear();

@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import 'package:roadservicerepair/app/constants/app_colors.dart';
 import 'package:roadservicerepair/app/constants/app_images.dart';
 import 'package:roadservicerepair/app/data/app_info.dart';
+import 'package:roadservicerepair/app/modules/GoogleMap/google_map_view.dart';
 import 'package:roadservicerepair/app/modules/customer_request_status/Customer_Request_Status.dart';
+import 'package:roadservicerepair/app/modules/customer_status/customer_status_view.dart';
+import 'package:roadservicerepair/app/modules/googlemapvendor/vendor_google_map_view.dart';
 import 'package:roadservicerepair/app/modules/login/login_view.dart';
 import 'package:roadservicerepair/app/modules/profile/profile_view.dart';
 import 'package:roadservicerepair/app/modules/request_service/request_service_view.dart';
@@ -64,7 +67,14 @@ class _SideBarViewState extends State<SideBarView> {
                                           ? "Vendor Request Status"
                           : _.initialPage.value==10
                           ? "Vendor Status"
-                                         : "View Inquiry",
+                          : _.initialPage.value==11
+                          ? "Map"
+                          : _.initialPage.value==12
+                          ? "Customer Status"
+                          : _.initialPage.value==13
+                          ? "Map"
+
+                          : "View Inquiry",
                       AppColors.titleText,
                       16),
                 ),
@@ -250,6 +260,47 @@ class _SideBarViewState extends State<SideBarView> {
                             ]  ),
                       ),
                     ),
+                    Obx(
+                          () => Visibility(
+                        visible: _.userType== "1",
+
+                        child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+
+                              setSideBarButton("Customer Status", () {
+                                _.onPageSelect(12);  // Changed from 9 to 10
+                              }, _.initialPage.value == 12),
+                            ]  ),
+                      ),
+                    ),
+
+                    Obx(
+                          () => Visibility(
+                            visible: _.userType== "1",
+                            child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+
+                              setSideBarButton("Map", () {
+                                _.onPageSelect(11);  // Changed from 9 to 10
+                              }, _.initialPage.value == 11),
+                            ]  ),
+                      ),
+                    ),
+                    Obx(
+                          () => Visibility(
+                        visible: _.userType== "2",
+                        child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+
+                              setSideBarButton("Map", () {
+                                _.onPageSelect(13);  // Changed from 9 to 10
+                              }, _.initialPage.value == 13),
+                            ]  ),
+                      ),
+                    ),
 
                     const SizedBox(height: 30),
 
@@ -284,6 +335,12 @@ class _SideBarViewState extends State<SideBarView> {
                                  ? const VendorRequestStatus()
                                  :_.initialPage.value==10
                                   ? const VendorStatusView()
+                    :_.initialPage.value==11
+                    ? const GoogleMapView()
+                    :_.initialPage.value==12
+                    ? const CustomerStatusView()
+                    :_.initialPage.value==13
+                    ? const VendorGoogleMapView()
                                  : const ViewvendorInquiry()
               ),
             ),

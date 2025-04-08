@@ -78,6 +78,10 @@ class _VendorReqViewState extends State<VendorReqView> {
                                   value: vendor['name'],
                                 ),
                                 VendorInfoRow(
+                                  label: 'Email',
+                                  value: vendor['cust_email'],
+                                ),
+                                VendorInfoRow(
                                   label: 'Unit Number',
                                   value: vendor['unit_number'],
                                 ),

@@ -13,6 +13,7 @@ import 'firebase_options.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingInBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+
   print("Handler background message ${message.messageId}");
 
   RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
@@ -36,6 +37,8 @@ Future<void> main() async {
 
   // Initialize Push Notifications and get the Firebase token
   await PushNotifications.init(); // Request notification permissions
+  await PushNotifications.localNotiInit(); // Ensure local notifications are initialized
+
   String? firebaseToken = await PushNotifications.getDeviceToken(); // Get the Firebase token
 
   if(firebaseToken!=null)
@@ -47,6 +50,13 @@ Future<void> main() async {
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message){
     print("Received Message : ${message.notification?.body}");
+    if (message.notification != null) {
+      PushNotifications.showSimpleNotification(
+        title: message.notification!.title ?? "No Title",
+        body: message.notification!.body ?? "No Body",
+        payload: "",
+      );
+    }
   });
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingInBackgroundHandler);
 

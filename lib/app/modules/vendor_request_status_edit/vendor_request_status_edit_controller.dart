@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:roadservicerepair/app/modules/vendor_request_status_edit/VendorStatusInfo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VendorStatusEditController extends GetxController {
   Rxn<VendorStatusInfo> vendorStatusInfo = Rxn<VendorStatusInfo>();
@@ -21,6 +23,10 @@ class VendorStatusEditController extends GetxController {
   final txtName = TextEditingController();
   final fnName = FocusNode();
   final isName = GlobalKey();
+
+  final txtEmail = TextEditingController();
+  final fnEmail = FocusNode();
+  final isEmail = GlobalKey();
 
   final txtUnitNumber = TextEditingController();
   final fnUnitNumber = FocusNode();
@@ -136,6 +142,7 @@ class VendorStatusEditController extends GetxController {
       txtService.text = info.service;
       txtServiceFor.text = info.serviceFor;
       txtName.text = info.name;
+      txtEmail.text = info.email;
       txtUnitNumber.text = info.unitNumber;
       txtDriverNumber.text = info.driverNumber;
       txtAddress.text = info.address;
@@ -165,6 +172,7 @@ class VendorStatusEditController extends GetxController {
       "service": txtService.text,
       "service_for": txtServiceFor.text,
       "name": txtName.text,
+      "cust_email":txtEmail.text,
       "unit_number": txtUnitNumber.text,
       "driver_number": txtDriverNumber.text,
       "address": txtAddress.text,
@@ -210,6 +218,7 @@ class VendorStatusEditController extends GetxController {
     txtService.clear();
     txtServiceFor.clear();
     txtName.clear();
+    txtEmail.clear();
     txtUnitNumber.clear();
     txtDriverNumber.clear();
     txtAddress.clear();
@@ -223,9 +232,6 @@ class VendorStatusEditController extends GetxController {
     txtReason.clear();
     txtStatus.clear();
   }
-
-
-
 
 
 }

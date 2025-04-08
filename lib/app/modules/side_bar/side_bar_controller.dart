@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,10 +21,35 @@ class SideBarController extends GetxController {
     showdrawer();
   }
 
-  onPageSelect(int value) {
+  onPageSelect(int value) async {
+    // Check if the selected page requires location access (11 or 13)
+    if (value == 11 || value == 13) {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        // Show dialog to enable location services
+        Get.defaultDialog(
+          title: "Location Disabled",
+          middleText: "Please enable location services to continue.",
+          textConfirm: "Enable",
+          onConfirm: () async {
+            Get.back();
+            await Geolocator.openLocationSettings();
+          },
+          textCancel: "Cancel",
+        );
+        return;
+      }
+    }
+
+    // Proceed with the page selection if location is enabled or page is different
     initialPage.value = value;
     Get.back();
   }
+
+  // onPageSelect(int value) {
+  //   initialPage.value = value;
+  //   Get.back();
+  // }
 
   showdrawer( ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -3,6 +3,7 @@ class VendorStatusInfo {
   final String service;
   final String serviceFor;
   final String name;
+  final String email;
   final String unitNumber;
   final String driverNumber;
   final String address;
@@ -21,6 +22,7 @@ class VendorStatusInfo {
     required this.service,
     required this.serviceFor,
     required this.name,
+    required this.email,
     required this.unitNumber,
     required this.driverNumber,
     required this.address,
@@ -41,6 +43,7 @@ class VendorStatusInfo {
       service: json['service'],
       serviceFor: json['service_for'],
       name: json['name'],
+      email: json['cust_email'],
       unitNumber: json['unit_number'],
       driverNumber: json['driver_number'],
       address: json['address'],

@@ -128,7 +128,16 @@ class _EditInquiryviewState extends State<EditInquiryview> {
               controller.fnUnitNumber,
                 enable: false
             ),
-
+            const SizedBox(height: 15),
+            setTextField(
+                context,
+                "Email",
+                "Enter Customer Email",
+                controller.isEmail,
+                controller.txtEmail,
+                controller.fnEmail,
+                enable: false
+            ),
             const SizedBox(height: 15),
             setTextField(
               context,

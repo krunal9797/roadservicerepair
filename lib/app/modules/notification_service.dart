@@ -93,7 +93,10 @@ class PushNotifications {
             channelDescription: 'your channel description',
             importance: Importance.max,
             priority: Priority.high,
-            ticker: 'ticker');
+            ticker: 'ticker',
+          playSound: true, // Enable sound
+        );
+
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await _flutterLocalNotificationsPlugin

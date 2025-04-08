@@ -69,6 +69,10 @@ class _ViewvendorInquiryState extends State<ViewvendorInquiry> {
                                           viewInquiry['service_for']),
                                       _buildRow('Name:',
                                           viewInquiry['name']),
+                                      _buildRow('Email:',
+                                          viewInquiry['email']),
+                                      _buildRow('Driver No:',
+                                          viewInquiry['driver_number']),
 
                                       _buildRow('Unit Number:',
                                           viewInquiry['unit_number']),

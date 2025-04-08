@@ -3,6 +3,7 @@ class VendorEditStatusInfo {
   final String service;
   final String serviceFor;
   final String name;
+  final String cust_email;
   final String unitNumber;
   final String driverNumber;
   final String address;
@@ -24,6 +25,7 @@ class VendorEditStatusInfo {
     required this.service,
     required this.serviceFor,
     required this.name,
+    required this.cust_email,
     required this.unitNumber,
     required this.driverNumber,
     required this.address,
@@ -47,6 +49,7 @@ class VendorEditStatusInfo {
       service: json['service'] ?? '',
       serviceFor: json['service_for'] ?? '',
       name: json['name'] ?? '',
+      cust_email: json['cust_email'] ?? '',
       unitNumber: json['unit_number'] ?? '',
       driverNumber: json['driver_number'] ?? '',
       address: json['address'] ?? '',
@@ -71,6 +74,7 @@ class VendorEditStatusInfo {
       'service': service,
       'service_for': serviceFor,
       'name': name,
+      'cust_email':cust_email,
       'unit_number': unitNumber,
       'driver_number': driverNumber,
       'address': address,

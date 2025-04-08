@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -5,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
@@ -76,7 +78,7 @@ class _ProfileViewState extends State<ProfileView> {
         _firebaseMessagingInBackgroundHandler);
 
     NotificationSettings setting = await _messaging.requestPermission(
-        alert: true, badge: true, provisional: false, sound: true);
+        alert: true, badge: true, provisional: true, sound: true);
 
     if (setting.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -199,12 +201,14 @@ class _ProfileViewState extends State<ProfileView> {
           print(user_type == 1 ? true : false);
           print("dmin");
           print(user_type == 0 ? true : false);
+          setState(() {});
 
           // SharedPreferences prefs = await SharedPreferences.getInstance();
           //   prefs.setString('email', jsonResponse['info']['email'].toString());
           // print(jsonResponse['info']['email'].toString());
 
           // Parse the response and navigate to the next screen
+
         } else {
           // Handle error response
           Get.snackbar("Error", jsonResponse['msg']);
@@ -216,7 +220,14 @@ class _ProfileViewState extends State<ProfileView> {
       print(e);
       Get.snackbar("Error", "${e}An error occurred");
     }
-    setState(() {});
+
+    print("user_type => "+user_type.toString());
+
+
+    startUpdatingLatLang();
+
+
+
   }
 
   @override
@@ -480,4 +491,74 @@ class _ProfileViewState extends State<ProfileView> {
       Get.snackbar("Error", "An error occurred: ${e.toString()}");
     }
   }
+
+  void startUpdatingLatLang() {
+    Timer.periodic(Duration(seconds: 15 ), (timer) async {
+      Position? position = await getCurrentLocation();
+      if (position != null) {
+        await updateLatLang(position.latitude, position.longitude);
+      }
+    });
+
+    // if(user_type.toString() == "2"){
+    //   Timer.periodic(Duration(seconds: 15 ), (timer) async {
+    //     Position? position = await getCurrentLocation();
+    //     if (position != null) {
+    //       await updateLatLang(position.latitude, position.longitude);
+    //     }
+    //   });
+    // }
+
+  }
+
+  Future<Position?> getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      print("Location services are disabled.");
+      return null;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print("Location permissions are denied.");
+        return null;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print("Location permissions are permanently denied.");
+      return null;
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> updateLatLang(double lat, double lng) async {
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request('POST', Uri.parse('https://roadservice.roadservicerepair.com/api/lat_long.php'));
+    print("Krunal: User ID: $u_id\nLatitude: $lat\nLongitude: $lng");
+
+    request.body = json.encode({
+      'email_id': prefs.getString('email'),
+      "lat": lat,
+      "lang": lng
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print("Error: ${response.reasonPhrase}");
+    }
+  }
+
+
 }

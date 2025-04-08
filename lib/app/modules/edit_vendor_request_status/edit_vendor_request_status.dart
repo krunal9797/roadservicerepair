@@ -68,6 +68,14 @@ class _EditVendorRequestStatusState extends State<EditVendorRequestStatus> {
               ),
               setTextField1(
                 context,
+                "Email",
+                "Enter Email",
+                controller.isEmail,
+                controller.txtEmail,
+                controller.fnEmail,
+              ),
+              setTextField1(
+                context,
                 "Unit Number",
                 "Enter Unit Number",
                 controller.isUnitNumber,

@@ -75,6 +75,7 @@ class EditInquiryController extends GetxController {
   final isName = GlobalKey<ShakeWidgetState>();
   final isUnitNumber = GlobalKey<ShakeWidgetState>();
   final isDriverNumber = GlobalKey<ShakeWidgetState>();
+  final isEmail = GlobalKey<ShakeWidgetState>();
   final isAddress = GlobalKey<ShakeWidgetState>();
   final isRemark = GlobalKey<ShakeWidgetState>();
   final isEstTime = GlobalKey<ShakeWidgetState>();
@@ -94,6 +95,7 @@ class EditInquiryController extends GetxController {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtUnitNumber = TextEditingController();
   TextEditingController txtDriverNumber = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
   TextEditingController txtAddress = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtEstTime = TextEditingController();
@@ -113,6 +115,7 @@ class EditInquiryController extends GetxController {
   FocusNode fnName = FocusNode();
   FocusNode fnUnitNumber = FocusNode();
   FocusNode fnDriverNumber = FocusNode();
+  FocusNode fnEmail = FocusNode();
   FocusNode fnAddress = FocusNode();
   FocusNode fnRemark = FocusNode();
   FocusNode fnEstTime = FocusNode();
@@ -145,6 +148,7 @@ class EditInquiryController extends GetxController {
     txtName.text = data['name'];
     txtUnitNumber.text = data['unit_number'];
     txtDriverNumber.text = data['driver_number'];
+    txtEmail.text = data['cust_email'];
     txtAddress.text = data['address'];
     txtRemark.text = data['remark'];
     txtEstTime.text = data['est_time'];
@@ -334,6 +338,7 @@ class EditInquiryController extends GetxController {
           'name': data['name'].toString(),
           'unit_number': data['unit_number'].toString(),
           'driver_number': data['driver_number'].toString(),
+          'cust_email': txtEmail.text.toString(),
           'address': data['address'].toString(),
           'remark': data['remark'].toString(),
           'est_time': data['est_time'].toString(),

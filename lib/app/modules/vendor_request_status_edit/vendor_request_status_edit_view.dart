@@ -61,6 +61,22 @@ class VendorRequestStatusEditView extends StatelessWidget {
               ),
               setTextField1(
                 context,
+                "Email",
+                "Enter Email",
+                controller.isEmail,
+                controller.txtEmail,
+                controller.fnEmail,
+              ),
+              setTextField1(
+                context,
+                "Drive Number",
+                "Enter Driver Number",
+                controller.isDriverNumber,
+                controller.txtDriverNumber,
+                controller.fnDriverNumber,
+              ),
+              setTextField1(
+                context,
                 "Unit Number",
                 "Enter Unit Number",
                 controller.isUnitNumber,

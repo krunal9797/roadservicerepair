@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class VendorStatusController extends GetxController {
   RxList arr = [].obs;
+  var selectedVsId = ''.obs; // Reactive variable to store selected vs_id
   String userType ='';
   String userEmail = '';
   Timer? _refreshTimer;
@@ -16,6 +17,7 @@ class VendorStatusController extends GetxController {
 
   void onInit() async{
     super.onInit();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type')!;
     userEmail = prefs.getString('email')!;
@@ -23,27 +25,56 @@ class VendorStatusController extends GetxController {
     print("krunal count "+count.toString());
     print("krunal userType "+userType);
     print("drawer "+userType);
+
     if(userType == "0"){
       fetchViewVendorStatus();
     }else if(userType == "2"){
       fetchViewVendorStatus2();
     }
 
-    print("ViewInquiryController");
-    _refreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      count = count + 1;
-      print("krunal count "+count.toString());
-      print("krunal count "+userType);
+
+    //getBackFlag();
+    if(getBackFlag() == true){
+      arr.clear();
       if(userType == "0"){
-        print("krunal count admin 0 "+userType);
         fetchViewVendorStatus();
       }else if(userType == "2"){
-        print("krunal count vendor 1 "+userType);
         fetchViewVendorStatus2();
       }
-    });
+    }else{
+
+    }
+
+
+    // print("ViewInquiryController");
+    // if(userType == "0"){
+    //   print("krunal count admin 0 "+userType);
+    //   fetchViewVendorStatus();
+    // }else if(userType == "2"){
+    //   print("krunal count vendor 1 "+userType);
+    //   fetchViewVendorStatus2();
+    // }
+
+    // _refreshTimer = Timer.periodic(const Duration(seconds: 60), (timer) {
+    //   count = count + 1;
+    //   print("krunal count "+count.toString());
+    //   print("krunal count "+userType);
+    //   if(userType == "0"){
+    //     print("krunal count admin 0 "+userType);
+    //     fetchViewVendorStatus();
+    //   }else if(userType == "2"){
+    //     print("krunal count vendor 1 "+userType);
+    //     fetchViewVendorStatus2();
+    //   }
+    // });
 
   }
+
+  Future<bool> getBackFlag() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('back_flag') ?? false;
+  }
+
 
   Future<void> fetchViewVendorStatus2() async{
     try {
@@ -61,7 +92,7 @@ class VendorStatusController extends GetxController {
         final data = json.decode(response.body);
         List<dynamic> list = data['info'];
         print(data);
-        arr.clear();
+//        arr.clear();
         arr.assignAll(list);
       } else {
         Get.snackbar('Error', 'Failed to Laod Vendor Request');
@@ -78,7 +109,7 @@ class VendorStatusController extends GetxController {
         final data = json.decode(response.body);
         List<dynamic> list = data['info'];
         print(data);
-        arr.clear();
+        // arr.clear();
         arr.assignAll(list);
       } else {
         Get.snackbar('Error', 'Failed to Laod Vendor Request');
@@ -88,10 +119,13 @@ class VendorStatusController extends GetxController {
     }
   }
 
-  Future<void> editVendorStatus(String id) async{
-    print("krunal "+id);
-    Get.to(() => const VendorRequestStatusEditView(), arguments: id);
+  void editVendorStatus(String vsId) {
+    selectedVsId.value = vsId.toString();  // Ensure this is properly updated
+    print("Selected vs_id updated to: $vsId");
+    Get.to(() => const VendorRequestStatusEditView(), arguments: vsId);
   }
+
+
 
   Future<void> deleteVendorStatus(String id,) async {
     print("Deleting ID: $id");

@@ -75,6 +75,7 @@ class EditinquiryController extends GetxController{
   final isType = GlobalKey<ShakeWidgetState>();
   final isName = GlobalKey<ShakeWidgetState>();
   final isUnitNumber = GlobalKey<ShakeWidgetState>();
+  final isEmail = GlobalKey<ShakeWidgetState>();
   final isDriverNumber = GlobalKey<ShakeWidgetState>();
   final isAddress = GlobalKey<ShakeWidgetState>();
   final isRemark = GlobalKey<ShakeWidgetState>();
@@ -95,6 +96,7 @@ class EditinquiryController extends GetxController{
   TextEditingController txtName = TextEditingController();
   TextEditingController txtUnitNumber = TextEditingController();
   TextEditingController txtDriverNumber = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
   TextEditingController txtAddress = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtEstTime = TextEditingController();
@@ -112,6 +114,7 @@ class EditinquiryController extends GetxController{
   FocusNode fnServiceFor = FocusNode();
   FocusNode fnType = FocusNode();
   FocusNode fnName = FocusNode();
+  FocusNode fnEmail = FocusNode();
   FocusNode fnUnitNumber = FocusNode();
   FocusNode fnDriverNumber = FocusNode();
   FocusNode fnAddress = FocusNode();
@@ -140,6 +143,7 @@ class EditinquiryController extends GetxController{
      txtUnitNumber.text = data['unit_number'];
      txtDriverNumber.text = data['driver_number'];
      txtAddress.text = data['address'];
+     txtEmail.text = data['email'];
 
      selectedService.value = txtService.text;
 
@@ -194,6 +198,7 @@ class EditinquiryController extends GetxController{
     print("vendor_address "+txtVendorAddress.text.toString());
     print("status "+status.toString());
     print("sta_tus "+data['sta_tus'].toString());
+    print("cust_email "+data['cust_email'].toString());
 
     try {
       final response = await http.post(
@@ -208,6 +213,7 @@ class EditinquiryController extends GetxController{
           'id': data['id'].toString(),
           'service': txtService.text.toString(),
           'service_for': txtServiceFor.text.toString(),
+          'cust_email':txtEmail.text.toString(),
           'name': txtName.text.toString(),
           'unit_number': txtUnitNumber.text.toString(),
           'driver_number': txtDriverNumber.text.toString(),

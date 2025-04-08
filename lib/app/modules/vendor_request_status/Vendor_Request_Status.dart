@@ -74,7 +74,9 @@ class _VendorRequestStatusState extends State<VendorRequestStatus> {
                           _buildRow('Service For:', customer['service_for'] ?? 'N/A'),
                           _buildRow('Name:', customer['name'] ?? 'N/A'),
                           _buildRow('Unit Number:', customer['unit_number'] ?? 'N/A'),
-                          //_buildRow('Driver Number:', customer['driver_number'] ?? 'N/A'),
+                          _buildRow('Cust Email:', customer['cust_email'] ?? 'N/A'),
+                          //hide driver no
+                          _buildRow('Driver Number:', customer['driver_number'] ?? 'N/A'),
                           _buildRow('Address:', customer['address'] ?? 'N/A'),
                           _buildRow('Remark:', customer['remark'] ?? 'N/A'),
                           _buildRow('Estimate Time:', customer['est_time'] ?? 'N/A'),

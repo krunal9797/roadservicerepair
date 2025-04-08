@@ -22,6 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+
 
     <application
         android:label="Road Service Repair"
@@ -60,6 +63,13 @@ round behind the Flutter UI. -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDUG0tIfUpSFYsa1fDhcvmnmHYxjkDGm_g"/>
+
+
+
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and
